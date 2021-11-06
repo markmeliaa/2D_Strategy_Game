@@ -22,7 +22,7 @@ public class Unit : MonoBehaviour
     public GameObject weaponIcon;
 
     // Attack Stats
-    public int health;
+    public int health = 10;
     public int attackDamage;
     public int defenseDamage;
     public int armor;
@@ -35,23 +35,31 @@ public class Unit : MonoBehaviour
 
 	private Animator camAnim;
 
-    public bool isKing;
+    public bool isBlueKing;
+
+    public bool isRedKing;
 
 	private AudioSource source;
 
-    public Text displayedText; 
+    public Text displayedText;
 
     private void Start()
     {
 		source = GetComponent<AudioSource>();
 		camAnim = Camera.main.GetComponent<Animator>();
         gm = FindObjectOfType<GM>();
+
+        if (isBlueKing)
+            displayedText = GameObject.FindGameObjectWithTag("blueTextLife").gameObject.GetComponent<Text>();
+        else if (isRedKing)
+            displayedText = GameObject.FindGameObjectWithTag("redTextLife").gameObject.GetComponent<Text>();
+
         UpdateHealthDisplay();
     }
 
     private void UpdateHealthDisplay ()
     {
-        if (isKing)
+        if (isRedKing || isBlueKing)
         {
             displayedText.text = health.ToString();
         }
@@ -204,7 +212,7 @@ public class Unit : MonoBehaviour
 				camAnim.SetTrigger("shake");
 			}
 
-            if (enemy.isKing)
+            if (enemy.isRedKing || enemy.isBlueKing)
             {
                 gm.ShowVictoryPanel(enemy.playerNumber);
             }
@@ -223,7 +231,7 @@ public class Unit : MonoBehaviour
 				camAnim.SetTrigger("shake");
 			}
 
-			if (isKing)
+			if (isRedKing || isBlueKing)
             {
                 gm.ShowVictoryPanel(playerNumber);
             }

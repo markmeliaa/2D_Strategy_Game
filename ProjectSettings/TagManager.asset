@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Archer
   - infoPanel
+  - blueTextLife
+  - redTextLife
+  - unitParent
   layers:
   - Default
   - TransparentFX
