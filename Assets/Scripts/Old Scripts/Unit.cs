@@ -184,7 +184,7 @@ public class Unit : MonoBehaviour
 
         if (transform.tag == "Archer" && enemy.tag != "Archer")
         {
-            if (Mathf.Abs(transform.position.x - enemy.transform.position.x) + Mathf.Abs(transform.position.y - enemy.transform.position.y) <= 1) // check is the enemy is near enough to attack
+            if (Mathf.Abs(transform.position.x - enemy.transform.position.x) + Mathf.Abs(transform.position.y - enemy.transform.position.y) <= 2) // check is the enemy is near enough to attack
             {
                 if (unitDamage >= 1)
                 {
@@ -195,6 +195,7 @@ public class Unit : MonoBehaviour
                 }
             }
         } else {
+
             if (unitDamage >= 1)
             {
                 health -= unitDamage;
