@@ -324,9 +324,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isSelected: 0
   hasMoved: 0
-  tileSpeed: 2
+  tileSpeed: 3
   moveSpeed: 10
-  attackRadius: 1
+  attackRadius: 2
   hasAttacked: 0
   enemiesInRange: []
   playerNumber: 1
