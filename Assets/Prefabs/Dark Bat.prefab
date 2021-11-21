@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 1642533359335901399}
   - component: {fileID: 1642533359335901396}
   - component: {fileID: 2057758935}
+  - component: {fileID: -4455338052410088500}
   m_Layer: 9
   m_Name: Dark Bat
   m_TagString: Untagged
@@ -112,7 +113,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1642533359335901395}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6, y: 0, z: -4.5277877}
+  m_LocalPosition: {x: 6, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1642533359395298476}
@@ -308,6 +309,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-4455338052410088500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642533359335901395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e88621520ab8bd4c8a83b77410e2e8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 2
 --- !u!1 &1642533359395298479
 GameObject:
   m_ObjectHideFlags: 0

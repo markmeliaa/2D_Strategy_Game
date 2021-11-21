@@ -1,18 +1,8 @@
-/*
-Copyright (C) 2012 Anomalous Underdog
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
-
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-// takes care of creating the mesh that will display the influence map
+// Creates the mesh for the influence map
 
 public interface GridData
 {
@@ -39,13 +29,13 @@ public class GridDisplay : MonoBehaviour
 	Color _positiveColor = Color.red;
 	
 	[SerializeField]
-	Color _positive2Color = Color.red;
+	Color _positive2Color = Color.yellow;
 	
 	[SerializeField]
 	Color _negativeColor = Color.blue;
 	
 	[SerializeField]
-	Color _negative2Color = Color.blue;
+	Color _negative2Color = Color.black;
 	
 	Color[] _colors;
 
@@ -65,8 +55,8 @@ public class GridDisplay : MonoBehaviour
 		_meshRenderer.material = _material;
 		
 		float _objectHeight = transform.position.y;
-		float _staX = 0;//bottomLeftPos.x;
-		float _staZ = 0;//bottomLeftPos.z;
+		float _staX = 0; //bottomLeftPos.x;
+		float _staZ = 0; //bottomLeftPos.z;
 		
 		// create squares starting at bottomLeftPos
 		List<Vector3> verts = new List<Vector3>();
@@ -89,7 +79,7 @@ public class GridDisplay : MonoBehaviour
 				verts.Add(tr);
 			}
 		}
-		Debug.Log("verts: " + verts.Count);
+		// Debug.Log("verts: " + verts.Count);
 		
 		List<Color> colors = new List<Color>();
 		for (int yIdx = 0; yIdx < _data.Height; ++yIdx)
@@ -150,7 +140,7 @@ public class GridDisplay : MonoBehaviour
 			tris.Add(br);
 			
 		}
-		Debug.Log("tris: " + tris.Count);
+		// Debug.Log("tris: " + tris.Count);
 		
 		_mesh.vertices = verts.ToArray();
 		_mesh.normals = norms.ToArray();

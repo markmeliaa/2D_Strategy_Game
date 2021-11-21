@@ -266,6 +266,7 @@ GameObject:
   - component: {fileID: 484875169853229651}
   - component: {fileID: 484875169853229650}
   - component: {fileID: 1361933532}
+  - component: {fileID: -1759287635360495188}
   m_Layer: 9
   m_Name: Dark King
   m_TagString: Untagged
@@ -281,7 +282,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 484875169853229663}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6, y: -2, z: -0.8361183}
+  m_LocalPosition: {x: 6, y: -2, z: 0}
   m_LocalScale: {x: 0.28262052, y: 0.28262052, z: 0.28262052}
   m_Children:
   - {fileID: 484875170324854394}
@@ -478,6 +479,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-1759287635360495188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484875169853229663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e88621520ab8bd4c8a83b77410e2e8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 4
 --- !u!1 &484875169938893817
 GameObject:
   m_ObjectHideFlags: 0
