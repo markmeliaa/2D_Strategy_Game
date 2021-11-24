@@ -243,9 +243,7 @@ public class Unit : MonoBehaviour
         }
 
         gm.UpdateInfoStats();
-  
-
-    }
+    }   
 
     public void ResetWeaponIcon() {
         Unit[] enemies = FindObjectsOfType<Unit>();
@@ -273,8 +271,5 @@ public class Unit : MonoBehaviour
         GetEnemies();
         gm.MoveInfoPanel(this);
     }
-
-
-
 
 }

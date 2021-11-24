@@ -131,6 +131,7 @@ public class InfluenceMap : GridData
     {
         List<Vector2I> retVal = new List<Vector2I>();
 
+        // as long as not in left edge
         if (x > 0) { retVal.Add(new Vector2I(x - 1, y)); }
 
         // as long as not in right edge
