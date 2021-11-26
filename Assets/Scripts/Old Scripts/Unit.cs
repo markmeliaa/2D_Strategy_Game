@@ -13,7 +13,7 @@ public class Unit : MonoBehaviour
 
     private GM gm;
 
-    public int attackRadius;
+    public float attackRadius;
     public bool hasAttacked;
     public List<Unit> enemiesInRange = new List<Unit>();
 
