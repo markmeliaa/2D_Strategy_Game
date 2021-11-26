@@ -49,6 +49,7 @@ public class GM : MonoBehaviour
 
     private void Update()
     {
+        if (playerTurn == 2) return; // AI turn. Player can't play.
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown("b")) {
             EndTurn();
         }

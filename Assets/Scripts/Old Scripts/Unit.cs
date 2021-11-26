@@ -67,50 +67,52 @@ public class Unit : MonoBehaviour
 
     private void OnMouseDown() // select character or deselect if already selected
     {
-        
-        ResetWeaponIcon();
-
-        if (isSelected == true)
+        if (gm.playerTurn == 1)
         {
-            
-            isSelected = false;
-            gm.selectedUnit = null;
-            gm.ResetTiles();
+            ResetWeaponIcon();
 
-        }
-        else {
-            if (playerNumber == gm.playerTurn) { // select unit only if it's his turn
-                if (gm.selectedUnit != null)
-                { // deselect the unit that is currently selected, so there's only one isSelected unit at a time
-                    gm.selectedUnit.isSelected = false;
-                }
+            if (isSelected == true)
+            {
+
+                isSelected = false;
+                gm.selectedUnit = null;
                 gm.ResetTiles();
 
-                gm.selectedUnit = this;
-
-                isSelected = true;
-				if(source != null){
-					source.Play();
-				}
-				
-                GetWalkableTiles();
-                GetEnemies();
             }
-
-        }
-
-
-
-        Collider2D col = Physics2D.OverlapCircle(Camera.main.ScreenToWorldPoint(Input.mousePosition), 0.15f);
-        if (col != null)
-        {
-            Unit unit = col.GetComponent<Unit>(); // double check that what we clicked on is a unit
-            if (unit != null && gm.selectedUnit != null)
+            else
             {
-                if (gm.selectedUnit.enemiesInRange.Contains(unit) && !gm.selectedUnit.hasAttacked)
-                { // does the currently selected unit have in his list the enemy we just clicked on
-                    gm.selectedUnit.Attack(unit);
+                if (playerNumber == gm.playerTurn)
+                { // select unit only if it's his turn
+                    if (gm.selectedUnit != null)
+                    { // deselect the unit that is currently selected, so there's only one isSelected unit at a time
+                        gm.selectedUnit.isSelected = false;
+                    }
+                    gm.ResetTiles();
 
+                    gm.selectedUnit = this;
+
+                    isSelected = true;
+                    if (source != null)
+                    {
+                        source.Play();
+                    }
+
+                    GetWalkableTiles();
+                    GetEnemies();
+                }
+
+                Collider2D col = Physics2D.OverlapCircle(Camera.main.ScreenToWorldPoint(Input.mousePosition), 0.15f);
+                if (col != null)
+                {
+                    Unit unit = col.GetComponent<Unit>(); // double check that what we clicked on is a unit
+                    if (unit != null && gm.selectedUnit != null)
+                    {
+                        if (gm.selectedUnit.enemiesInRange.Contains(unit) && !gm.selectedUnit.hasAttacked)
+                        { // does the currently selected unit have in his list the enemy we just clicked on
+                            gm.selectedUnit.Attack(unit);
+
+                        }
+                    }
                 }
             }
         }
