@@ -227,6 +227,7 @@ public class Unit : MonoBehaviour
 
             GetWalkableTiles(); // check for new walkable tiles (if enemy has died we can now walk on his tile)
             gm.RemoveInfoPanel(enemy);
+            PathfindingWithoutThreads.grid.NodeFromWorldPoint(enemy.transform.position).walkable = true;
             Destroy(enemy.gameObject);
         }
 
@@ -246,6 +247,7 @@ public class Unit : MonoBehaviour
 
             gm.ResetTiles(); // reset tiles when we die
             gm.RemoveInfoPanel(this);
+            PathfindingWithoutThreads.grid.NodeFromWorldPoint(this.transform.position).walkable = true;
             Destroy(gameObject);
         }
 
@@ -297,7 +299,7 @@ public class Unit : MonoBehaviour
             yield return null;
         }
         */
-        Debug.Log(lastNode.worldPosition);
+
         lastNode.walkable = false;
         currentNode = lastNode;
         hasMoved = true;

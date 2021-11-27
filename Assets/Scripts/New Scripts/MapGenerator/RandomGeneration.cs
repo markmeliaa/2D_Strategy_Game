@@ -13,6 +13,8 @@ public class RandomGeneration : MonoBehaviour
 
     [SerializeField] public List<GameObject> spawnpoints;
 
+    Node currentNode;
+
     private GameObject unitParent;
 
     // Start is called before the first frame update
@@ -22,12 +24,16 @@ public class RandomGeneration : MonoBehaviour
 
         int rand = Random.Range(0, spawnpoints.Count);
         Instantiate(king, spawnpoints[rand].transform.position, Quaternion.identity, unitParent.transform);
+        currentNode = PathfindingWithoutThreads.grid.NodeFromWorldPoint(spawnpoints[rand].transform.position);
+        currentNode.walkable = false;
         spawnpoints.RemoveAt(rand);
 
         for (int i = 0; i < 3; i++)
         {
             rand = Random.Range(0, spawnpoints.Count);
             Instantiate(knight, spawnpoints[rand].transform.position, Quaternion.identity, unitParent.transform);
+            currentNode = PathfindingWithoutThreads.grid.NodeFromWorldPoint(spawnpoints[rand].transform.position);
+            currentNode.walkable = false;
             spawnpoints.RemoveAt(rand);
         }
 
@@ -35,6 +41,8 @@ public class RandomGeneration : MonoBehaviour
         {
             rand = Random.Range(0, spawnpoints.Count);
             Instantiate(archer, spawnpoints[rand].transform.position, Quaternion.identity, unitParent.transform);
+            currentNode = PathfindingWithoutThreads.grid.NodeFromWorldPoint(spawnpoints[rand].transform.position);
+            currentNode.walkable = false;
             spawnpoints.RemoveAt(rand);
         }
 
@@ -42,6 +50,8 @@ public class RandomGeneration : MonoBehaviour
         {
             rand = Random.Range(0, spawnpoints.Count);
             Instantiate(dragon, spawnpoints[rand].transform.position, Quaternion.identity, unitParent.transform);
+            currentNode = PathfindingWithoutThreads.grid.NodeFromWorldPoint(spawnpoints[rand].transform.position);
+            currentNode.walkable = false;
             spawnpoints.RemoveAt(rand);
         }
 
@@ -49,6 +59,8 @@ public class RandomGeneration : MonoBehaviour
         {
             rand = Random.Range(0, spawnpoints.Count);
             Instantiate(village, spawnpoints[rand].transform.position, Quaternion.identity, unitParent.transform);
+            currentNode = PathfindingWithoutThreads.grid.NodeFromWorldPoint(spawnpoints[rand].transform.position);
+            currentNode.walkable = false;
             spawnpoints.RemoveAt(rand);
         }
 
@@ -57,6 +69,11 @@ public class RandomGeneration : MonoBehaviour
             rand = Random.Range(0, spawnpoints.Count);
             int rand2 = Random.Range(0, trees.Length);
             Instantiate(trees[rand2], spawnpoints[rand].transform.position, Quaternion.identity, unitParent.transform);
+            if (rand2 == 2 || rand2 == 6 || rand2 == 7)
+            {
+                currentNode = PathfindingWithoutThreads.grid.NodeFromWorldPoint(spawnpoints[rand].transform.position);
+                currentNode.walkable = false;
+            }
             spawnpoints.RemoveAt(rand);
         }
     }

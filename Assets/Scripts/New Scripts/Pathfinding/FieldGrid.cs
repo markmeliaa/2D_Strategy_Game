@@ -74,8 +74,6 @@ public class FieldGrid : MonoBehaviour
         int x = Mathf.RoundToInt((gridSizeX - 1) * (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x);
         int y = Mathf.RoundToInt((gridSizeY - 1) * (worldPosition.y + gridWorldSize.y / 2) / gridWorldSize.y);
 
-        Debug.Log(worldPosition + " converts to " + x + " " + y);
-
         return grid[x, y];
 
         /*
