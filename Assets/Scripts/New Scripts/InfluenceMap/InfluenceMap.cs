@@ -173,13 +173,12 @@ public class InfluenceMap : GridData
         {
             for (int y = 0; y < influences.GetLength(1); ++y)
             {
-                if (influences[x, y] < 0) positions.Add(new Vector3(x - 6, y - 3.5f, 0));
+                if (influences[x, y] < 0) positions.Add(new Vector3(x - 10.5f, y - 6.75f, 0));
             }
         }
         return positions;
     }
 
-    /*
     public Vector3 GetPositionWithMoreInfluence()
     {
         float maxInfluence = 10f;
@@ -188,7 +187,7 @@ public class InfluenceMap : GridData
         {
             for (int y = 0; y < influences.GetLength(1); ++y)
             {
-                if (influences[x, y] < maxInfluence && Pathfinding.Grid.NodeFromPosition(new Vector3(-(x - 6), -(y - 3.5f), 0)).Walkable)
+                if (influences[x, y] < maxInfluence && PathfindingWithoutThreads.grid.NodeFromWorldPoint(new Vector3(-(x - 10.5f), -(y - 6.75f), 0)).walkable)
                 {
                     maxInfluence = influences[x, y];
                     posWithMaxInfluence = new Vector3(-(x - 6), -(y - 3.5f), 0);
@@ -206,7 +205,7 @@ public class InfluenceMap : GridData
         {
             for (int y = 0; y > influences.GetLength(1); ++y)
             {
-                if (influences[x, y] < minInfluence && Pathfinding.Grid.NodeFromPosition(new Vector3(-(x - 6), -(y - 3.5f), 0)).Walkable)
+                if (influences[x, y] < minInfluence && PathfindingWithoutThreads.grid.NodeFromWorldPoint(new Vector3(-(x - 10.5f), -(y - 6.75f), 0)).walkable)
                 {
                     minInfluence = influences[x, y];
                     posWithMinInfluence = new Vector3(-(x - 6), -(y - 3.5f), 0);
@@ -215,5 +214,4 @@ public class InfluenceMap : GridData
         }
         return posWithMinInfluence;
     }
-    */
 }

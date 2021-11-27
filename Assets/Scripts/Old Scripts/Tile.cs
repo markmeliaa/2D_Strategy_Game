@@ -20,12 +20,16 @@ public class Tile : MonoBehaviour
 
 	private AudioSource source;
 
+    public Node node;
+
     private void Start()
     {
 		source = GetComponent<AudioSource>();
         gm = FindObjectOfType<GM>();
         rend = GetComponent<SpriteRenderer>();
 
+        isWalkable = false;
+        node = PathfindingWithoutThreads.grid.NodeFromWorldPoint(transform.position);
     }
 
     public bool isClear() // does this tile have an obstacle on it. Yes or No?
@@ -35,7 +39,9 @@ public class Tile : MonoBehaviour
         {
             return true;
         }
-        else {
+
+        else 
+        {
             return false;
         }
     }
@@ -60,18 +66,27 @@ public class Tile : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (isWalkable == true) {
-            gm.selectedUnit.Move(this.transform);
-        } else if (isCreatable == true && gm.createdUnit != null) {
+        if (gm.playerTurn == 2) return;
+
+        if (isCreatable == true && gm.createdUnit != null) 
+        {
             Unit unit = Instantiate(gm.createdUnit, new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
             unit.hasMoved = true;
             unit.hasAttacked = true;
             gm.ResetTiles();
             gm.createdUnit = null;
-        } else if (isCreatable == true && gm.createdVillage != null) {
+        } 
+        
+        else if (isCreatable == true && gm.createdVillage != null) 
+        {
             Instantiate(gm.createdVillage, new Vector3(transform.position.x, transform.position.y, 0) , Quaternion.identity);
             gm.ResetTiles();
             gm.createdVillage = null;
+        }
+
+        else if (gm.selectedUnit != null && isWalkable && node.walkable)
+        {
+            gm.selectedUnit.Move(node);
         }
     }
 

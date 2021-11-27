@@ -71,14 +71,23 @@ public class FieldGrid : MonoBehaviour
 
     public Node NodeFromWorldPoint(Vector3 worldPosition)
     {
+        int x = Mathf.RoundToInt((gridSizeX - 1) * (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x);
+        int y = Mathf.RoundToInt((gridSizeY - 1) * (worldPosition.y + gridWorldSize.y / 2) / gridWorldSize.y);
+
+        Debug.Log(worldPosition + " converts to " + x + " " + y);
+
+        return grid[x, y];
+
+        /*
         float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
-        float percentY = (worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y;
+        float percentY = (worldPosition.y + gridWorldSize.y / 2) / gridWorldSize.y;
         percentX = Mathf.Clamp01(percentX);
         percentY = Mathf.Clamp01(percentY);
 
         int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
         return grid[x, y];
+        */
     }
 
     void OnDrawGizmos()

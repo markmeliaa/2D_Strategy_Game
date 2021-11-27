@@ -43,6 +43,10 @@ public class Unit : MonoBehaviour
 
     public Text displayedText;
 
+    // Pathfinding stuff
+    Node currentNode;
+    Queue<Vector3> path;
+
     private void Start()
     {
 		source = GetComponent<AudioSource>();
@@ -55,6 +59,7 @@ public class Unit : MonoBehaviour
             displayedText = GameObject.FindGameObjectWithTag("redTextLife").gameObject.GetComponent<Text>();
 
         UpdateHealthDisplay();
+        currentNode = PathfindingWithoutThreads.grid.NodeFromWorldPoint(transform.position);
     }
 
     private void UpdateHealthDisplay ()
@@ -164,10 +169,10 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void Move(Transform movePos)
+    public void Move(Node n)
     {
         gm.ResetTiles();
-        StartCoroutine(StartMovement(movePos));
+        StartCoroutine(StartMovement(n));
     }
 
     void Attack(Unit enemy) {
@@ -255,9 +260,33 @@ public class Unit : MonoBehaviour
         }
     }
 
-    IEnumerator StartMovement(Transform movePos) { // Moves the character to his new position.
+    IEnumerator StartMovement(Node moveTo) { // Moves the character to his new position.
 
+        path = PathfindingWithoutThreads.FindPath(transform.position, moveTo.worldPosition);
 
+        Node lastNode = null;
+        if (path.Count > 0)
+        {
+            int steps = 0;
+            currentNode.walkable = true;
+
+            while (path.Count > 0 && steps < moveSpeed)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, path.Peek(), Time.deltaTime);
+                gm.MoveInfoPanel(this);
+
+                if (transform.position == path.Peek())
+                {
+                    steps++;
+                    lastNode = PathfindingWithoutThreads.grid.NodeFromWorldPoint(path.Peek());
+                    path.Dequeue();
+                }
+
+                yield return null;
+            }
+        }
+
+        /*
         while (transform.position.x != movePos.position.x) { // first aligns him with the new tile's x pos
             transform.position = Vector2.MoveTowards(transform.position, new Vector2(movePos.position.x, transform.position.y), moveSpeed * Time.deltaTime);
             yield return null;
@@ -267,11 +296,13 @@ public class Unit : MonoBehaviour
             transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x, movePos.position.y), moveSpeed * Time.deltaTime);
             yield return null;
         }
-
+        */
+        Debug.Log(lastNode.worldPosition);
+        lastNode.walkable = false;
+        currentNode = lastNode;
         hasMoved = true;
         ResetWeaponIcon();
         GetEnemies();
-        gm.MoveInfoPanel(this);
     }
 
     public void Act()
@@ -290,6 +321,8 @@ public class Unit : MonoBehaviour
 
     void Flee()
     {
-
+        Vector3 moveTo = InfluenceMapControl.influenceMap.GetPositionWithLessInfluence();
+        Debug.Log(moveTo);
+        if (moveTo != new Vector3(-99, -99, -99)) StartCoroutine(StartMovement(PathfindingWithoutThreads.grid.NodeFromWorldPoint(moveTo)));
     }
 }
