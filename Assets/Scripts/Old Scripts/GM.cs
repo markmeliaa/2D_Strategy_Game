@@ -12,6 +12,7 @@ public class GM : MonoBehaviour
 
     public Transform selectedUnitSquare;
 
+    public AIBehavior AIBehavior;
 
     private Animator camAnim;
     public Image playerIcon; 
@@ -49,7 +50,7 @@ public class GM : MonoBehaviour
 
     private void Update()
     {
-        if (playerTurn == 2) return; // AI turn. Player can't play.
+        // if (playerTurn == 2) return; // AI turn. Player can't play.
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown("b")) {
             EndTurn();
         }
@@ -152,6 +153,8 @@ public class GM : MonoBehaviour
         GetGoldIncome(playerTurn);
         GetComponent<CharacterCreation>().CloseCharacterCreationMenus();
         createdUnit = null;
+
+        if (playerTurn == 2) StartCoroutine(AIBehavior.AITurn());
     }
 
     void GetGoldIncome(int playerTurn) {
@@ -193,6 +196,4 @@ public class GM : MonoBehaviour
     public void RestartGame() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-
-
 }

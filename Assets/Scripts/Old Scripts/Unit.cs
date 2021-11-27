@@ -274,4 +274,22 @@ public class Unit : MonoBehaviour
         gm.MoveInfoPanel(this);
     }
 
+    public void Act()
+    {
+        if (hasMoved) return;
+
+        if (isBlueKing)
+        {
+            Flee();
+            return;
+        }
+
+        // Move();
+        // Attack();
+    }
+
+    void Flee()
+    {
+
+    }
 }

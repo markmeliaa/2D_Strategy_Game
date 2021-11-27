@@ -9,7 +9,7 @@ public class AIBehavior : MonoBehaviour
 
     public IEnumerator AITurn()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.1f);
 
         enemyUnits.Clear();
 
@@ -20,14 +20,12 @@ public class AIBehavior : MonoBehaviour
         }
 
         // First check to buy troops
-        yield return new WaitForSeconds(1f);
         BuyTroop(Random.Range(0, 3));
 
         // Then move the troops
-        yield return new WaitForSeconds(1f);
         foreach (Unit unit in enemyUnits)
         {
-            //unit.Act();
+            unit.Act();
         }
     }
 
@@ -39,7 +37,7 @@ public class AIBehavior : MonoBehaviour
             return;
 
         // Spend just in one troop, the best you can afford
-        if (spend == 1 && gm.player2Gold > 40 && enemyUnits.Count > 6)
+        if (spend == 1 && gm.player2Gold > 40 && enemyUnits.Count < 7)
         {
             if (gm.player2Gold > 100 && enemyUnits.Count > 3)
             {
@@ -64,12 +62,14 @@ public class AIBehavior : MonoBehaviour
                 Debug.Log("Can buy knight");
                 gm.player2Gold -= 40;
             }
+
+            gm.UpdateGoldText();
         }
 
         // Spend all the money
-        if (spend == 2)
+        if (spend == 2 && enemyUnits.Count < 7)
         {
-            while (gm.player2Gold > 40 && enemyUnits.Count > 6)
+            while (gm.player2Gold > 40)
             {
                 if (gm.player2Gold > 100 && enemyUnits.Count > 3)
                 {
@@ -95,7 +95,7 @@ public class AIBehavior : MonoBehaviour
                     gm.player2Gold -= 40;
                 }
 
-                break;
+                gm.UpdateGoldText();
             }
         }
     }
