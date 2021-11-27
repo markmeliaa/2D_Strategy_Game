@@ -2,23 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitThreads : MonoBehaviour
+public class UnitWithoutThreads : MonoBehaviour
 {
     public Transform target;
-    float speed = 1.0f;
+    float speed = 20.0f;
     Vector3[] path;
     int targetIndex;
 
     void Start()
     {
-        // WITH THREADS
-        PathRequestManagerThreads.RequestPath(new PathRequestThreads(transform.position, target.position, OnPathFound));
+        // WITHOUT THREADS
+        PathRequestManagerWithoutThreads.RequestPath(transform.position, target.position, OnPathFound);
     }
 
     private void Update()
     {
         // WITH THREADS
-        PathRequestManagerThreads.RequestPath(new PathRequestThreads(transform.position, target.position, OnPathFound));
+        PathRequestManagerWithoutThreads.RequestPath(transform.position, target.position, OnPathFound);
     }
 
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
@@ -49,7 +49,6 @@ public class UnitThreads : MonoBehaviour
             }
 
             transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
-            transform.LookAt(currentWaypoint);
             yield return null;
         }
     }
@@ -61,7 +60,7 @@ public class UnitThreads : MonoBehaviour
             for (int i = targetIndex; i < path.Length; i++)
             {
                 Gizmos.color = Color.blue;
-                Gizmos.DrawCube(path[i], new Vector3(0.3f, 0.3f, 0.3f));
+                Gizmos.DrawCube(path[i], Vector3.one);
 
                 if (i == targetIndex)
                 {

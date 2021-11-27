@@ -1,22 +1,31 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics;
 using System;
 
-public class PathfindingThreads : MonoBehaviour
+public class PathfindingWithoutThreads : MonoBehaviour
 {
+    PathRequestManagerWithoutThreads requestManager;
+
     // Grid script and this script must be in the same gameObject for this to work
-    FieldGrid grid;
+    public FieldGrid grid;
 
     void Awake()
     {
         grid = GetComponent<FieldGrid>();
+        requestManager = GetComponent<PathRequestManagerWithoutThreads>(); // WITHOUT THREADS
     }
 
-    // WITH THREADS
+    // WITHOUT THREADS
+    public void StartFindPath(Vector3 startPos, Vector3 targetPos)
+    {
+        StartCoroutine(FindPath(startPos, targetPos));
+    }
+
+    // WITHOUT THREADS
     // Apply A*
-    public void FindPath(PathRequestThreads request, Action<PathResultThreads> callback)
+    IEnumerator FindPath(Vector3 startPos, Vector3 targetPos)
     {
         Stopwatch sw = new Stopwatch();
         sw.Start();
@@ -24,8 +33,8 @@ public class PathfindingThreads : MonoBehaviour
         Vector3[] waypoints = new Vector3[0];
         bool pathSuccess = false;
 
-        Node startNode = grid.NodeFromWorldPoint(request.pathStart);
-        Node targetNode = grid.NodeFromWorldPoint(request.pathEnd);
+        Node startNode = grid.NodeFromWorldPoint(startPos);
+        Node targetNode = grid.NodeFromWorldPoint(targetPos);
 
         if (startNode.walkable && targetNode.walkable)
         {
@@ -65,14 +74,14 @@ public class PathfindingThreads : MonoBehaviour
                 }
             }
 
+            yield return null;
+
             if (pathSuccess)
             {
                 waypoints = RetracePath(startNode, targetNode);
                 pathSuccess = waypoints.Length > 0;
             }
-
-            // Callback para devolver el control al proceso inicial
-            callback(new PathResultThreads(waypoints, pathSuccess, request.callback));
+            requestManager.FinishedProcessingPath(waypoints, pathSuccess);
         }
 
     }
@@ -112,7 +121,7 @@ public class PathfindingThreads : MonoBehaviour
         return waypoints.ToArray();
     }
 
-    int GetDistance (Node nodeA, Node nodeB)
+    int GetDistance(Node nodeA, Node nodeB)
     {
         int dstX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
         int dstY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
