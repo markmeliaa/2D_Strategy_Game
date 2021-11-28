@@ -181,16 +181,16 @@ public class InfluenceMap : GridData
 
     public Vector3 GetPositionWithMoreInfluence()
     {
-        float maxInfluence = 10f;
+        float maxInfluence = 3f;
         Vector3 posWithMaxInfluence = new Vector3(-99, -99, -99);
-        for (int x = 0; x < influences.GetLength(0); ++x)
+        for (int x = 0; x < influences.GetLength(0); x++)
         {
-            for (int y = 0; y < influences.GetLength(1); ++y)
+            for (int y = 0; y < influences.GetLength(1); y++)
             {
-                if (influences[x, y] < maxInfluence && PathfindingWithoutThreads.grid.NodeFromWorldPoint(new Vector3(-(x - 10.5f), -(y - 6.75f), 0)).walkable)
+                if (influences[x, y] >= maxInfluence && PathfindingWithoutThreads.grid.NodeFromWorldPoint(new Vector3(x - 11.5f, y - 6f, 0)).walkable)
                 {
                     maxInfluence = influences[x, y];
-                    posWithMaxInfluence = new Vector3(-(x - 6), -(y - 3.5f), 0);
+                    posWithMaxInfluence = new Vector3(x - 11.5f, y - 6, 0);
                 }
             }
         }
@@ -199,16 +199,16 @@ public class InfluenceMap : GridData
 
     public Vector3 GetPositionWithLessInfluence()
     {
-        float minInfluence = -10f;
+        float minInfluence = -3f;
         Vector3 posWithMinInfluence = new Vector3(-99, -99, -99);
-        for (int x = 0; x < influences.GetLength(0); ++x)
+        for (int x = 0; x < influences.GetLength(0); x++)
         {
-            for (int y = 0; y > influences.GetLength(1); ++y)
+            for (int y = 0; y < influences.GetLength(1); y++)
             {
-                if (influences[x, y] < minInfluence && PathfindingWithoutThreads.grid.NodeFromWorldPoint(new Vector3(-(x - 10.5f), -(y - 6.75f), 0)).walkable)
+                if (influences[x, y] <= minInfluence && PathfindingWithoutThreads.grid.NodeFromWorldPoint(new Vector3(x - 11.5f, y - 6, 0)).walkable)
                 {
                     minInfluence = influences[x, y];
-                    posWithMinInfluence = new Vector3(-(x - 6), -(y - 3.5f), 0);
+                    posWithMinInfluence = new Vector3(x - 11.5f, y - 6, 0);
                 }
             }
         }

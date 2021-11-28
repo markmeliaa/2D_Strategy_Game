@@ -266,15 +266,17 @@ public class Unit : MonoBehaviour
 
         path = PathfindingWithoutThreads.FindPath(transform.position, moveTo.worldPosition);
 
+        Debug.Log("Moving " + this.gameObject.name);
+
         Node lastNode = null;
         if (path.Count > 0)
         {
             int steps = 0;
             currentNode.walkable = true;
 
-            while (path.Count > 0 && steps < moveSpeed)
+            while (path.Count > 0 && steps < tileSpeed)
             {
-                transform.position = Vector3.MoveTowards(transform.position, path.Peek(), Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, path.Peek(), Time.deltaTime * 5);
                 gm.MoveInfoPanel(this);
 
                 if (transform.position == path.Peek())
@@ -317,14 +319,21 @@ public class Unit : MonoBehaviour
             return;
         }
 
-        // Move();
+        Move();
         // Attack();
     }
 
     void Flee()
     {
         Vector3 moveTo = InfluenceMapControl.influenceMap.GetPositionWithLessInfluence();
-        Debug.Log(moveTo);
+        
+        if (moveTo != new Vector3(-99, -99, -99)) StartCoroutine(StartMovement(PathfindingWithoutThreads.grid.NodeFromWorldPoint(moveTo)));
+    }
+
+    void Move()
+    {
+        Vector3 moveTo = InfluenceMapControl.influenceMap.GetPositionWithMoreInfluence();
+
         if (moveTo != new Vector3(-99, -99, -99)) StartCoroutine(StartMovement(PathfindingWithoutThreads.grid.NodeFromWorldPoint(moveTo)));
     }
 }

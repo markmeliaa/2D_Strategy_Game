@@ -21,12 +21,16 @@ public class AIBehavior : MonoBehaviour
 
         // First check to buy troops
         BuyTroop(Random.Range(0, 3));
+        yield return new WaitForSeconds(0.75f);
 
         // Then move the troops
         foreach (Unit unit in enemyUnits)
         {
             unit.Act();
+            yield return new WaitForSeconds(1.5f);
         }
+
+        gm.EndTurn();
     }
 
     // Decides whether to buy or not
@@ -37,7 +41,7 @@ public class AIBehavior : MonoBehaviour
             return;
 
         // Spend just in one troop, the best you can afford
-        if (spend == 1 && gm.player2Gold > 40 && enemyUnits.Count < 7)
+        if (spend == 1 && gm.player2Gold > 40 && enemyUnits.Count < 11)
         {
             if (gm.player2Gold > 100 && enemyUnits.Count > 3)
             {

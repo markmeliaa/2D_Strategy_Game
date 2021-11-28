@@ -122,7 +122,7 @@ public class GM : MonoBehaviour
         }
     }
 
-    void EndTurn() {
+    public void EndTurn() {
 		source.Play();
         camAnim.SetTrigger("shake");
 
