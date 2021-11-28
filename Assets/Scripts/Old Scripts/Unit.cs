@@ -115,7 +115,6 @@ public class Unit : MonoBehaviour
                         if (gm.selectedUnit.enemiesInRange.Contains(unit) && !gm.selectedUnit.hasAttacked)
                         { // does the currently selected unit have in his list the enemy we just clicked on
                             gm.selectedUnit.Attack(unit);
-
                         }
                     }
                 }
@@ -222,6 +221,8 @@ public class Unit : MonoBehaviour
 
             if (enemy.isRedKing || enemy.isBlueKing)
             {
+                enemy.health = 0;
+                UpdateHealthDisplay();
                 gm.ShowVictoryPanel(enemy.playerNumber);
             }
 
@@ -242,6 +243,8 @@ public class Unit : MonoBehaviour
 
 			if (isRedKing || isBlueKing)
             {
+                health = 0;
+                UpdateHealthDisplay();
                 gm.ShowVictoryPanel(playerNumber);
             }
 
@@ -309,18 +312,24 @@ public class Unit : MonoBehaviour
         GetEnemies();
     }
 
-    public void Act()
+    public IEnumerator Act()
     {
-        if (hasMoved) return;
-
-        if (isBlueKing)
+        if (!hasMoved)
         {
-            Flee();
-            return;
-        }
+            if (isBlueKing)
+            {
+                Flee();
+                yield return new WaitForSeconds(1.5f);
+                Attack();
+            }
 
-        Move();
-        // Attack();
+            else
+            {
+                Move();
+                yield return new WaitForSeconds(1.5f);
+                Attack();
+            }
+        }
     }
 
     void Flee()
@@ -335,5 +344,13 @@ public class Unit : MonoBehaviour
         Vector3 moveTo = InfluenceMapControl.influenceMap.GetPositionWithMoreInfluence();
 
         if (moveTo != new Vector3(-99, -99, -99)) StartCoroutine(StartMovement(PathfindingWithoutThreads.grid.NodeFromWorldPoint(moveTo)));
+    }
+
+    void Attack()
+    {
+        if (enemiesInRange.Count > 0)
+        {
+            Attack(enemiesInRange[Random.Range(0, enemiesInRange.Count)]);
+        }
     }
 }

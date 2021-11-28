@@ -26,7 +26,7 @@ public class AIBehavior : MonoBehaviour
         // Then move the troops
         foreach (Unit unit in enemyUnits)
         {
-            unit.Act();
+            StartCoroutine(unit.Act());
             yield return new WaitForSeconds(1.5f);
         }
 

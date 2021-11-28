@@ -157,7 +157,7 @@ MonoBehaviour:
   hasMoved: 0
   tileSpeed: 5
   moveSpeed: 10
-  attackRadius: 1.5
+  attackRadius: 1.25
   hasAttacked: 0
   enemiesInRange: []
   playerNumber: 1

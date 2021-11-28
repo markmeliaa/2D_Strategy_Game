@@ -638,7 +638,7 @@ MonoBehaviour:
   hasMoved: 0
   tileSpeed: 3
   moveSpeed: 10
-  attackRadius: 1.5
+  attackRadius: 1.25
   hasAttacked: 0
   enemiesInRange: []
   playerNumber: 2
@@ -821,4 +821,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e88621520ab8bd4c8a83b77410e2e8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  value: -20
+  value: -5

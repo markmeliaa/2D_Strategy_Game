@@ -50,7 +50,7 @@ public class GM : MonoBehaviour
 
     private void Update()
     {
-        // if (playerTurn == 2) return; // AI turn. Player can't play.
+        if (playerTurn == 2) return; // AI turn. Player can't play.
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown("b")) {
             EndTurn();
         }
@@ -188,8 +188,12 @@ public class GM : MonoBehaviour
         if (playerNumber == 1)
         {
             blueVictory.SetActive(true);
-        } else if (playerNumber == 2) {
+            StopAllCoroutines();
+        } 
+        
+        else if (playerNumber == 2) {
             darkVictory.SetActive(true);
+            StopAllCoroutines();
         }
     }
 

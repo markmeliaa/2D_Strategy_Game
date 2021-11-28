@@ -29,12 +29,15 @@ public class InfluenceMapControl : MonoBehaviour
 	[SerializeField]
 	GridDisplay display = null;
 
+	public float x;
+	public float y;
+
 	void createMap()
 	{
 		int width = (int)(Mathf.Abs(upperRight.position.x - bottomLeft.position.x) / gridSize);
 		int height = (int)(Mathf.Abs(upperRight.position.y - bottomLeft.position.y) / gridSize);
 
-		influenceMap = new InfluenceMap(width, height, decay, momentum);
+		influenceMap = new InfluenceMap(width, height, decay, momentum, x, y);
 
 		display.SetGridData(influenceMap);
 		display.CreateMesh(bottomLeft.position, gridSize);
