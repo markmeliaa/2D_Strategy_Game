@@ -156,7 +156,7 @@ MonoBehaviour:
   isSelected: 0
   hasMoved: 0
   tileSpeed: 5
-  moveSpeed: 10
+  moveSpeed: 6
   attackRadius: 1.25
   hasAttacked: 0
   enemiesInRange: []

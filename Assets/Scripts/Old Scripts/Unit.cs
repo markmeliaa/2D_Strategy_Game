@@ -190,7 +190,7 @@ public class Unit : MonoBehaviour
 
         if (transform.tag == "Archer" && enemy.tag != "Archer")
         {
-            if (Mathf.Abs(transform.position.x - enemy.transform.position.x) + Mathf.Abs(transform.position.y - enemy.transform.position.y) <= 2) // check is the enemy is near enough to attack
+            if (Mathf.Abs(transform.position.x - enemy.transform.position.x) + Mathf.Abs(transform.position.y - enemy.transform.position.y) <= 1.25) // check is the enemy is near enough to attack
             {
                 if (unitDamage >= 1)
                 {
@@ -200,8 +200,10 @@ public class Unit : MonoBehaviour
                     d.Setup(unitDamage);
                 }
             }
-        } else {
-
+        } 
+        
+        else 
+        {
             if (unitDamage >= 1)
             {
                 health -= unitDamage;
@@ -269,7 +271,7 @@ public class Unit : MonoBehaviour
 
         path = PathfindingWithoutThreads.FindPath(transform.position, moveTo.worldPosition);
 
-        Debug.Log("Moving " + this.gameObject.name);
+        //Debug.Log("Moving " + this.gameObject.name);
 
         Node lastNode = null;
         if (path.Count > 0)
@@ -279,7 +281,7 @@ public class Unit : MonoBehaviour
 
             while (path.Count > 0 && steps < tileSpeed)
             {
-                transform.position = Vector3.MoveTowards(transform.position, path.Peek(), Time.deltaTime * 5);
+                transform.position = Vector3.MoveTowards(transform.position, path.Peek(), moveSpeed * Time.deltaTime);
                 gm.MoveInfoPanel(this);
 
                 if (transform.position == path.Peek())
@@ -323,6 +325,13 @@ public class Unit : MonoBehaviour
                 Attack();
             }
 
+            else if (transform.tag == "Archer")
+            {
+                MoveArcher();
+                yield return new WaitForSeconds(1.5f);
+                Attack();
+            }
+
             else
             {
                 Move();
@@ -346,10 +355,59 @@ public class Unit : MonoBehaviour
         if (moveTo != new Vector3(-99, -99, -99)) StartCoroutine(StartMovement(PathfindingWithoutThreads.grid.NodeFromWorldPoint(moveTo)));
     }
 
+    void MoveArcher()
+    {
+        Vector3 moveTo = InfluenceMapControl.influenceMap.GetPositionWithMoreInfluence();
+
+        if (moveTo != new Vector3(-99, -99, -99))
+        {
+            foreach (Unit unit in FindObjectsOfType<Unit>())
+            {
+                if (unit.playerNumber == 1 && unit.transform.tag != "Archer")
+                {
+                    if (unit.transform.position.x == moveTo.x - 1 && PathfindingWithoutThreads.grid.NodeFromWorldPoint(new Vector3(moveTo.x + 1, moveTo.y, moveTo.z)).walkable)
+                    {
+                        moveTo.x += 1;
+                        break;
+                    }
+
+                    else if (unit.transform.position.x == moveTo.x + 1 && PathfindingWithoutThreads.grid.NodeFromWorldPoint(new Vector3(moveTo.x - 1, moveTo.y, moveTo.z)).walkable) 
+                    {
+                        moveTo.x -= 1;
+                        break;
+                    }
+
+                    else if (unit.transform.position.y == moveTo.y - 1 && PathfindingWithoutThreads.grid.NodeFromWorldPoint(new Vector3(moveTo.x, moveTo.y + 1, moveTo.z)).walkable)
+                    {
+                        moveTo.y += 1;
+                        break;
+                    }
+
+                    else if (unit.transform.position.y == moveTo.y + 1 && PathfindingWithoutThreads.grid.NodeFromWorldPoint(new Vector3(moveTo.x, moveTo.y - 1, moveTo.z)).walkable)
+                    {
+                        moveTo.y -= 1;
+                        break;
+                    }
+                }
+            }
+
+            StartCoroutine(StartMovement(PathfindingWithoutThreads.grid.NodeFromWorldPoint(moveTo)));
+        }
+    }
+
     void Attack()
     {
         if (enemiesInRange.Count > 0)
         {
+            foreach (Unit enemy in enemiesInRange)
+            {
+                if (enemy.isRedKing)
+                {
+                    Attack(enemy);
+                    return;
+                }
+            }
+
             Attack(enemiesInRange[Random.Range(0, enemiesInRange.Count)]);
         }
     }
