@@ -7,8 +7,6 @@ using System;
 
 public class PathfindingWithoutThreads : MonoBehaviour
 {
-    PathRequestManagerWithoutThreads requestManager;
-
     // Grid script and this script must be in the same gameObject for this to work
     public static FieldGrid grid;
 
@@ -62,6 +60,8 @@ public class PathfindingWithoutThreads : MonoBehaviour
                     neighbour.gCost = newMovementCostToNeighbour;
                     neighbour.hCost = GetDistance(neighbour, targetNode);
                     neighbour.parent = currentNode;
+
+                    UnityEngine.Debug.Log(neighbour.influenceCost);
 
                     if (!openSet.Contains(neighbour))
                         openSet.Add(neighbour);
