@@ -29,7 +29,6 @@ public class AIBehavior : MonoBehaviour
 
         // First check to buy troops
         //BuyTroop(Random.Range(0, 3));
-        yield return new WaitForSeconds(0.75f);
 
         // Then move the troops
         foreach (Unit unit in enemyUnits)
@@ -41,6 +40,7 @@ public class AIBehavior : MonoBehaviour
         gm.EndTurn();
     }
 
+    /*
     // Decides whether to buy or not
     // TODO: Place the units and villages in the map
     public void BuyTroop(int spend)
@@ -111,4 +111,5 @@ public class AIBehavior : MonoBehaviour
             }
         }
     }
+    */
 }

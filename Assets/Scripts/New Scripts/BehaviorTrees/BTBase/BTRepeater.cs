@@ -11,8 +11,7 @@ public class BTRepeater : BTDecorator
 
     public override Result Execute()
     {
-        Child.Execute();
         //Debug.Log("Child returned: " + Child.Execute());
-        return Result.Running;
+        return Child.Execute();
     }
 }

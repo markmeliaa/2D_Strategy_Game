@@ -76,12 +76,31 @@ public class CharacterCreation : MonoBehaviour
             List<Tile> availableTiles = GetCreatableTiles();
             Vector3 lessInfluence = InfluenceMapControl.influenceMap.GetPositionWithLessInfluence();
 
+            bool next = false;
             foreach (Tile tile in availableTiles)
             {
-                if (Mathf.Abs(tile.gameObject.transform.position.x - lessInfluence.x) < 1 && Mathf.Abs(tile.gameObject.transform.position.y - lessInfluence.y) < 1)
+                if (next)
                 {
-                    Instantiate(unit, tile.gameObject.transform.position, Quaternion.identity);
-                    return;
+                    if (PathfindingWithoutThreads.grid.NodeFromWorldPoint(tile.gameObject.transform.position).walkable)
+                    {
+                        Instantiate(unit, tile.gameObject.transform.position, Quaternion.identity).gameObject.transform.parent = GameObject.FindGameObjectWithTag("unitParent").gameObject.transform;
+                        next = false;
+                        PathfindingWithoutThreads.grid.NodeFromWorldPoint(tile.gameObject.transform.position).walkable = false;
+                        return;
+                    }
+                }
+
+                if (!next && Mathf.Abs(tile.gameObject.transform.position.x - lessInfluence.x) < 1 && Mathf.Abs(tile.gameObject.transform.position.y - lessInfluence.y) < 1)
+                {
+                    if (PathfindingWithoutThreads.grid.NodeFromWorldPoint(tile.gameObject.transform.position).walkable)
+                    {
+                        Instantiate(unit, tile.gameObject.transform.position, Quaternion.identity).gameObject.transform.parent = GameObject.FindGameObjectWithTag("unitParent").gameObject.transform;
+                        PathfindingWithoutThreads.grid.NodeFromWorldPoint(tile.gameObject.transform.position).walkable = false;
+                        return;
+                    }
+
+                    else
+                        next = true;
                 }
             }
         }
@@ -119,12 +138,31 @@ public class CharacterCreation : MonoBehaviour
             List<Tile> availableTiles = GetCreatableTiles();
             Vector3 lessInfluence = InfluenceMapControl.influenceMap.GetPositionWithLessInfluence();
 
+            bool next = false;
             foreach (Tile tile in availableTiles)
             {
-                if (Mathf.Abs(tile.gameObject.transform.position.x - lessInfluence.x) < 1 && Mathf.Abs(tile.gameObject.transform.position.y - lessInfluence.y) < 1)
+                if (next)
                 {
-                    Instantiate(village, tile.gameObject.transform.position, Quaternion.identity);
-                    return;
+                    if (PathfindingWithoutThreads.grid.NodeFromWorldPoint(tile.gameObject.transform.position).walkable)
+                    {
+                        Instantiate(village, tile.gameObject.transform.position, Quaternion.identity).gameObject.transform.parent = GameObject.FindGameObjectWithTag("unitParent").gameObject.transform;
+                        next = false;
+                        PathfindingWithoutThreads.grid.NodeFromWorldPoint(tile.gameObject.transform.position).walkable = false;
+                        return;
+                    }
+                }
+
+                if (!next && Mathf.Abs(tile.gameObject.transform.position.x - lessInfluence.x) < 1 && Mathf.Abs(tile.gameObject.transform.position.y - lessInfluence.y) < 1)
+                {
+                    if (PathfindingWithoutThreads.grid.NodeFromWorldPoint(tile.gameObject.transform.position).walkable)
+                    {
+                        Instantiate(village, tile.gameObject.transform.position, Quaternion.identity).gameObject.transform.parent = GameObject.FindGameObjectWithTag("unitParent").gameObject.transform;
+                        PathfindingWithoutThreads.grid.NodeFromWorldPoint(tile.gameObject.transform.position).walkable = false;
+                        return;
+                    }
+
+                    else
+                        next = true;
                 }
             }
         }

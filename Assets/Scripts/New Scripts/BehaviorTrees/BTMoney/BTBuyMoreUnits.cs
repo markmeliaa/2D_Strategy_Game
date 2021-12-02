@@ -6,59 +6,57 @@ public class BTBuyMoreUnits : BTNode
 {
     GM gm;
     CharacterCreation characterCreation;
-    Unit selectedUnit = null;
-    int random;
+    List<Unit> selectedUnits = new List<Unit>();
 
     public BTBuyMoreUnits(BehaviorTree t) : base(t)
     {
         gm = GameObject.Find("GameMaster").GetComponent<GM>();
         characterCreation = GameObject.Find("GameMaster").GetComponent<CharacterCreation>();
-        random = Random.Range(0, 2);
-
-        if (random == 1)
-            selectedUnit = BuyUnit();
     }
 
-    public Unit BuyUnit()
+    public List<Unit> BuyUnits()
     {
-        while (gm.player1Gold > 40)
+        while (gm.player2Gold > 40)
         {
             if (gm.player2Gold > 100)
             {
-                selectedUnit = gm.blueVillage.GetComponent<Unit>();
+                selectedUnits.Add(gm.blueVillage.GetComponent<Unit>());
                 characterCreation.BuyVillage(gm.blueVillage.GetComponent<Village>());
-                Debug.Log("Buying village");
+                //Debug.Log("Buying village");
             }
 
             else if (gm.player2Gold > 90)
             {
-                selectedUnit = gm.blueArcher.GetComponent<Unit>();
+                selectedUnits.Add(gm.blueArcher.GetComponent<Unit>());
                 characterCreation.BuyUnit(gm.blueArcher.GetComponent<Unit>());
-                Debug.Log("Buying archer");
+                //Debug.Log("Buying archer");
             }
 
             else if (gm.player2Gold > 70)
             {
-                selectedUnit = gm.blueDragon.GetComponent<Unit>();
+                selectedUnits.Add(gm.blueDragon.GetComponent<Unit>());
                 characterCreation.BuyUnit(gm.blueDragon.GetComponent<Unit>());
-                Debug.Log("Buying dragon");
+                //Debug.Log("Buying dragon");
             }
 
             else
             {
-                selectedUnit = gm.blueKnight.GetComponent<Unit>();
+                selectedUnits.Add(gm.blueKnight.GetComponent<Unit>());
                 characterCreation.BuyUnit(gm.blueKnight.GetComponent<Unit>());
-                Debug.Log("Buying knight");
+                //Debug.Log("Buying knight");
             }
         }
         
-        return selectedUnit;
+        return selectedUnits;
     }
 
     public override Result Execute()
     {
+        selectedUnits = BuyUnits();
+        Debug.Log("Buy more");
+
         // If a unit can be bought and placed, return Success
-        if (selectedUnit != null)
+        if (selectedUnits.Count > 0)
         {
             return Result.Success;
         }
