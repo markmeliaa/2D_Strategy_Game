@@ -11,7 +11,7 @@ public class FieldGrid : MonoBehaviour
     Node[,] grid;
 
     float nodeDiameter;
-    int gridSizeX, gridSizeY;
+    public int gridSizeX, gridSizeY;
 
     void Awake()
     {

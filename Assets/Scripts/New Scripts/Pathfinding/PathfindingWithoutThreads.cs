@@ -61,7 +61,7 @@ public class PathfindingWithoutThreads : MonoBehaviour
                     neighbour.hCost = GetDistance(neighbour, targetNode);
                     neighbour.parent = currentNode;
 
-                    UnityEngine.Debug.Log(neighbour.influenceCost);
+                    //UnityEngine.Debug.Log(neighbour.influenceCost);
 
                     if (!openSet.Contains(neighbour))
                         openSet.Add(neighbour);

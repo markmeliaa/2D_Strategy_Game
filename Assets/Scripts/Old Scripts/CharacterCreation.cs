@@ -14,7 +14,6 @@ public class CharacterCreation : MonoBehaviour
     public GameObject player1Menu;
     public GameObject player2Menu;
 
-
     private void Start()
     {
         gm = FindObjectOfType<GM>();
@@ -49,20 +48,43 @@ public class CharacterCreation : MonoBehaviour
         {
             player1Menu.SetActive(false);
             gm.player1Gold -= unit.cost;
-        } else if (unit.playerNumber == 2 && unit.cost <= gm.player2Gold)
+        } 
+        
+        else if (unit.playerNumber == 2 && unit.cost <= gm.player2Gold)
         {
             player2Menu.SetActive(false);
             gm.player2Gold -= unit.cost;
-        } else {
+        } 
+        
+        else {
             print("NOT ENOUGH GOLD, SORRY!");
             return;
         }
 
         gm.UpdateGoldText();
-        gm.createdUnit = unit;
 
-        DeselectUnit();
-        SetCreatableTiles();
+        if (gm.playerTurn == 1)
+        {
+            gm.createdUnit = unit;
+
+            DeselectUnit();
+            SetCreatableTiles();
+        }
+
+        else
+        {
+            List<Tile> availableTiles = GetCreatableTiles();
+            Vector3 lessInfluence = InfluenceMapControl.influenceMap.GetPositionWithLessInfluence();
+
+            foreach (Tile tile in availableTiles)
+            {
+                if (Mathf.Abs(tile.gameObject.transform.position.x - lessInfluence.x) < 1 && Mathf.Abs(tile.gameObject.transform.position.y - lessInfluence.y) < 1)
+                {
+                    Instantiate(unit, tile.gameObject.transform.position, Quaternion.identity);
+                    return;
+                }
+            }
+        }
     }
 
     public void BuyVillage(Village village) {
@@ -82,12 +104,30 @@ public class CharacterCreation : MonoBehaviour
             return;
         }
         gm.UpdateGoldText();
-        gm.createdVillage = village;
 
-        DeselectUnit();
+        if (gm.playerTurn == 1)
+        {
+            gm.createdVillage = village;
 
-        SetCreatableTiles();
+            DeselectUnit();
 
+            SetCreatableTiles();
+        }
+        
+        else
+        {
+            List<Tile> availableTiles = GetCreatableTiles();
+            Vector3 lessInfluence = InfluenceMapControl.influenceMap.GetPositionWithLessInfluence();
+
+            foreach (Tile tile in availableTiles)
+            {
+                if (Mathf.Abs(tile.gameObject.transform.position.x - lessInfluence.x) < 1 && Mathf.Abs(tile.gameObject.transform.position.y - lessInfluence.y) < 1)
+                {
+                    Instantiate(village, tile.gameObject.transform.position, Quaternion.identity);
+                    return;
+                }
+            }
+        }
     }
 
     void SetCreatableTiles() {
@@ -103,6 +143,22 @@ public class CharacterCreation : MonoBehaviour
         }
     }
 
+    List<Tile> GetCreatableTiles() {
+        gm.ResetTiles();
+        List<Tile> availableTiles = new List<Tile>();
+
+        Tile[] tiles = FindObjectsOfType<Tile>();
+        foreach (Tile tile in tiles)
+        {
+            if (tile.isClear())
+            {
+                availableTiles.Add(tile);
+            }
+        }
+
+        return availableTiles;
+    }
+
     void DeselectUnit() {
         if (gm.selectedUnit != null)
         {
@@ -110,8 +166,4 @@ public class CharacterCreation : MonoBehaviour
             gm.selectedUnit = null;
         }
     }
-
-
-
-
 }

@@ -62,6 +62,7 @@ public class Tile : MonoBehaviour
         if (isCreatable == true && gm.createdUnit != null) 
         {
             Unit unit = Instantiate(gm.createdUnit, new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
+            PathfindingWithoutThreads.grid.NodeFromWorldPoint(unit.transform.position).walkable = false;
             unit.hasMoved = true;
             unit.hasAttacked = true;
             gm.ResetTiles();

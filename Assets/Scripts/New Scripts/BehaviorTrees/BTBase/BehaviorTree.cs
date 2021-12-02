@@ -5,11 +5,11 @@ using UnityEngine;
 public class BehaviorTree : MonoBehaviour
 {
     private BTNode mRoot;
-    private bool startedBehavior;
-    private Coroutine behavior;
+    private BTNode aRoot;
 
     public Dictionary<string, object> Blackboard { get; set; }
-    public BTNode Root { get { return mRoot; } }
+    public BTNode MRoot { get { return mRoot; } }
+    public BTNode ARoot { get { return aRoot; } }
 
     // Start is called before the first frame update
     void Start()
@@ -17,33 +17,27 @@ public class BehaviorTree : MonoBehaviour
         Blackboard = new Dictionary<string, object>();
         Blackboard.Add("WorldBounds", new Rect(0, 0, 5, 5));
 
-        // Initial behavior is stopped
-        startedBehavior = false;
-
-        mRoot = new BTRepeater(this, new BTSequencer(this, new BTNode[] { new BTRandomWalk(this) }));
+        mRoot = new BTNode(this);
+        aRoot = new BTNode(this);
     }
 
-    // Update is called once per frame
-    void Update()
+    public IEnumerator RunBehavior(BTNode root)
     {
-        if (!startedBehavior)
-        {
-            behavior = StartCoroutine(RunBehavior());
-            startedBehavior = true;
-        }
-    }
+        mRoot = new BTRepeater(this, new BTSequencer(this, new BTNode[] { new BTCheckMoney(this),
+            new BTRepeater(this, new BTSelector(this, new BTNode[] { new BTSaveMoney(this),
+                new BTRepeater(this, new BTSelector(this, new BTNode[] {
+                    new BTRepeater(this, new BTSequencer(this, new BTNode[] { new BTMore5Units(this), new BTBuyOneUnit(this) })),
+                    new BTRepeater(this, new BTSequencer(this, new BTNode[] { new BTLess5Units(this), new BTBuyMoreUnits(this) })) })) })) }));
 
-    private IEnumerator RunBehavior()
-    {
-        BTNode.Result result = Root.Execute();
+        BTNode.Result result = root.Execute();
 
         while (result == BTNode.Result.Running)
         {
-            Debug.Log("Root result: " + result);
+            //Debug.Log("Root result: " + result);
             yield return null;
-            result = Root.Execute();
+            result = root.Execute();
         }
 
-        Debug.Log("Behavior has finished with: " + result);
+        //Debug.Log("Behavior has finished with: " + result);
     }
 }

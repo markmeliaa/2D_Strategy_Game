@@ -130,8 +130,6 @@ public class Unit : MonoBehaviour
         }
     }
 
-
-
     void GetWalkableTiles() { // Looks for the tiles the unit can walk on
         if (hasMoved == true) {
             return;

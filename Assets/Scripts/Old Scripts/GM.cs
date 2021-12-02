@@ -41,6 +41,11 @@ public class GM : MonoBehaviour
 
 	private AudioSource source;
 
+    public GameObject blueKnight;
+    public GameObject blueArcher;
+    public GameObject blueDragon;
+    public GameObject blueVillage;
+
     private void Start()
     {
 		source = GetComponent<AudioSource>();
