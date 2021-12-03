@@ -63,6 +63,7 @@ public class Tile : MonoBehaviour
         {
             Unit unit = Instantiate(gm.createdUnit, new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
             PathfindingWithoutThreads.grid.NodeFromWorldPoint(unit.transform.position).walkable = false;
+            PathfindingWithoutThreads.grid.NodeFromWorldPoint(unit.transform.position).hasUnit = true;
             unit.hasMoved = true;
             unit.hasAttacked = true;
             gm.ResetTiles();

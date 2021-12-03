@@ -12,7 +12,7 @@ public class BTSaveMoney : BTNode
 
     public override Result Execute()
     {
-        Debug.Log(random + " global");
+        Debug.Log(random);
 
         // If the random is 0, return Success
         if (random < 1)

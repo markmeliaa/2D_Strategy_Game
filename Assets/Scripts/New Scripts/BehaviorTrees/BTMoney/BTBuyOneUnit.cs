@@ -50,7 +50,7 @@ public class BTBuyOneUnit : BTNode
     public override Result Execute()
     {
         selectedUnit = BuyUnit();
-        Debug.Log("Buy one");
+        //Debug.Log("Buy one");
 
         // If a unit can be bought and placed, return Success
         if (selectedUnit != null)

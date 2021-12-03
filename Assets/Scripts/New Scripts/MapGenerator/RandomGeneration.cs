@@ -26,6 +26,7 @@ public class RandomGeneration : MonoBehaviour
         Instantiate(king, spawnpoints[rand].transform.position, Quaternion.identity, unitParent.transform);
         currentNode = PathfindingWithoutThreads.grid.NodeFromWorldPoint(spawnpoints[rand].transform.position);
         currentNode.walkable = false;
+        currentNode.hasUnit = true;
         spawnpoints.RemoveAt(rand);
 
         for (int i = 0; i < 3; i++)
@@ -34,15 +35,17 @@ public class RandomGeneration : MonoBehaviour
             Instantiate(knight, spawnpoints[rand].transform.position, Quaternion.identity, unitParent.transform);
             currentNode = PathfindingWithoutThreads.grid.NodeFromWorldPoint(spawnpoints[rand].transform.position);
             currentNode.walkable = false;
+            currentNode.hasUnit = true;
             spawnpoints.RemoveAt(rand);
         }
-
+       
         for (int i = 0; i < 2; i++)
         {
             rand = Random.Range(0, spawnpoints.Count);
             Instantiate(archer, spawnpoints[rand].transform.position, Quaternion.identity, unitParent.transform);
             currentNode = PathfindingWithoutThreads.grid.NodeFromWorldPoint(spawnpoints[rand].transform.position);
             currentNode.walkable = false;
+            currentNode.hasUnit = true;
             spawnpoints.RemoveAt(rand);
         }
 
@@ -52,8 +55,10 @@ public class RandomGeneration : MonoBehaviour
             Instantiate(dragon, spawnpoints[rand].transform.position, Quaternion.identity, unitParent.transform);
             currentNode = PathfindingWithoutThreads.grid.NodeFromWorldPoint(spawnpoints[rand].transform.position);
             currentNode.walkable = false;
+            currentNode.hasUnit = true;
             spawnpoints.RemoveAt(rand);
         }
+        
 
         for (int i = 0; i < 3; i++)
         {

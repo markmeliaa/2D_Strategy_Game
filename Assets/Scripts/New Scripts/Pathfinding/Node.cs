@@ -5,6 +5,7 @@ using UnityEngine;
 public class Node : IHeapItem<Node>
 {
     public bool walkable;
+    public bool hasUnit;
     public Vector3 worldPosition;
     public int gridX;
     public int gridY;
@@ -21,6 +22,7 @@ public class Node : IHeapItem<Node>
         worldPosition = _worldPos;
         gridX = _gridX;
         gridY = _gridY;
+        hasUnit = false;
     }
 
     public int fCost

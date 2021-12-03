@@ -96,7 +96,12 @@ public class FieldGrid : MonoBehaviour
         {
             foreach (Node n in grid)
             {
-                Gizmos.color = (n.walkable) ? Color.white : Color.red;
+                Gizmos.color = Color.white;
+                if (!n.walkable)
+                    Gizmos.color = Color.red;
+                if (n.hasUnit)
+                    Gizmos.color = Color.green;
+                //Gizmos.color = (n.walkable) ? Color.white : Color.red;
                 Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - 0.1f));
             }
         }

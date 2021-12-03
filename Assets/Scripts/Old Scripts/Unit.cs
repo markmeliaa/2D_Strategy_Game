@@ -45,7 +45,7 @@ public class Unit : MonoBehaviour
 
     // Pathfinding stuff
     Node currentNode;
-    Queue<Vector3> path;
+    List<Vector3> path;
 
     private void Start()
     {
@@ -276,17 +276,18 @@ public class Unit : MonoBehaviour
         {
             int steps = 0;
             currentNode.walkable = true;
+            currentNode.hasUnit = false;
 
             while (path.Count > 0 && steps < tileSpeed)
             {
-                transform.position = Vector3.MoveTowards(transform.position, path.Peek(), moveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, path[0], moveSpeed * Time.deltaTime);
                 gm.MoveInfoPanel(this);
 
-                if (transform.position == path.Peek())
+                if (transform.position == path[0])
                 {
                     steps++;
-                    lastNode = PathfindingWithoutThreads.grid.NodeFromWorldPoint(path.Peek());
-                    path.Dequeue();
+                    lastNode = PathfindingWithoutThreads.grid.NodeFromWorldPoint(path[0]);
+                    path.RemoveAt(0);
                 }
 
                 yield return null;
@@ -305,7 +306,89 @@ public class Unit : MonoBehaviour
         }
         */
 
-        lastNode.walkable = false;
+        if (lastNode != null)
+        {
+            lastNode.walkable = false;
+            lastNode.hasUnit = true;
+        }
+
+        currentNode = lastNode;
+        hasMoved = true;
+        ResetWeaponIcon();
+        GetEnemies();
+    }
+
+    IEnumerator StartMovementArcher(Node moveTo)
+    { // Moves the character to his new position.
+
+        path = PathfindingWithoutThreads.FindPath(transform.position, moveTo.worldPosition);
+
+        Node lastNode = null;
+        if (path.Count > 0)
+        {
+            int steps = 0;
+            currentNode.walkable = true;
+            currentNode.hasUnit = false;
+
+            Vector3 last = new Vector3();
+            Vector3 lastlast = new Vector3();
+
+            foreach (Vector3 node in path)
+            {
+                lastlast = last;
+                last = node;
+            }
+
+            List<Node> neighbors = PathfindingWithoutThreads.grid.GetNeighours(PathfindingWithoutThreads.grid.NodeFromWorldPoint(last));
+
+            foreach (Node node in neighbors)
+            {
+                if (PathfindingWithoutThreads.grid.NodeFromWorldPoint(lastlast).walkable && node.hasUnit)
+                {
+                    path.Remove(last);
+                    break;
+                }
+            }
+
+            while (path.Count > 0 && steps < tileSpeed)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, path[0], moveSpeed * Time.deltaTime);
+                gm.MoveInfoPanel(this);
+
+                if (transform.position == path[0])
+                {
+                    steps++;
+                    lastNode = PathfindingWithoutThreads.grid.NodeFromWorldPoint(path[0]);
+                    path.RemoveAt(0);
+                }
+
+                yield return null;
+            }
+
+            /*
+            neighbors = PathfindingWithoutThreads.grid.GetNeighours(PathfindingWithoutThreads.grid.NodeFromWorldPoint(path[0]));
+
+            foreach (Node node in neighbors)
+            {
+                if (node.hasUnit)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, path[0], moveSpeed * Time.deltaTime);
+                    gm.MoveInfoPanel(this);
+
+                    lastNode = PathfindingWithoutThreads.grid.NodeFromWorldPoint(path[0]);
+                    path.RemoveAt(0);
+                }
+                    
+            }
+            */
+        }
+
+        if (lastNode != null)
+        {
+            lastNode.walkable = false;
+            lastNode.hasUnit = true;
+        }
+
         currentNode = lastNode;
         hasMoved = true;
         ResetWeaponIcon();
@@ -357,40 +440,7 @@ public class Unit : MonoBehaviour
     {
         Vector3 moveTo = InfluenceMapControl.influenceMap.GetPositionWithMoreInfluence();
 
-        if (moveTo != new Vector3(-99, -99, -99))
-        {
-            foreach (Unit unit in FindObjectsOfType<Unit>())
-            {
-                if (unit.playerNumber == 1 && unit.transform.tag != "Archer")
-                {
-                    if (unit.transform.position.x == moveTo.x - 1 && PathfindingWithoutThreads.grid.NodeFromWorldPoint(new Vector3(moveTo.x + 1, moveTo.y, moveTo.z)).walkable)
-                    {
-                        moveTo.x += 1;
-                        break;
-                    }
-
-                    else if (unit.transform.position.x == moveTo.x + 1 && PathfindingWithoutThreads.grid.NodeFromWorldPoint(new Vector3(moveTo.x - 1, moveTo.y, moveTo.z)).walkable) 
-                    {
-                        moveTo.x -= 1;
-                        break;
-                    }
-
-                    else if (unit.transform.position.y == moveTo.y - 1 && PathfindingWithoutThreads.grid.NodeFromWorldPoint(new Vector3(moveTo.x, moveTo.y + 1, moveTo.z)).walkable)
-                    {
-                        moveTo.y += 1;
-                        break;
-                    }
-
-                    else if (unit.transform.position.y == moveTo.y + 1 && PathfindingWithoutThreads.grid.NodeFromWorldPoint(new Vector3(moveTo.x, moveTo.y - 1, moveTo.z)).walkable)
-                    {
-                        moveTo.y -= 1;
-                        break;
-                    }
-                }
-            }
-
-            StartCoroutine(StartMovement(PathfindingWithoutThreads.grid.NodeFromWorldPoint(moveTo)));
-        }
+        if (moveTo != new Vector3(-99, -99, -99)) StartCoroutine(StartMovementArcher(PathfindingWithoutThreads.grid.NodeFromWorldPoint(moveTo)));
     }
 
     void Attack()

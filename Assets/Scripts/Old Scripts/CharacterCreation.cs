@@ -86,6 +86,7 @@ public class CharacterCreation : MonoBehaviour
                         Instantiate(unit, tile.gameObject.transform.position, Quaternion.identity).gameObject.transform.parent = GameObject.FindGameObjectWithTag("unitParent").gameObject.transform;
                         next = false;
                         PathfindingWithoutThreads.grid.NodeFromWorldPoint(tile.gameObject.transform.position).walkable = false;
+                        PathfindingWithoutThreads.grid.NodeFromWorldPoint(tile.gameObject.transform.position).hasUnit = true;
                         return;
                     }
                 }
@@ -96,6 +97,7 @@ public class CharacterCreation : MonoBehaviour
                     {
                         Instantiate(unit, tile.gameObject.transform.position, Quaternion.identity).gameObject.transform.parent = GameObject.FindGameObjectWithTag("unitParent").gameObject.transform;
                         PathfindingWithoutThreads.grid.NodeFromWorldPoint(tile.gameObject.transform.position).walkable = false;
+                        PathfindingWithoutThreads.grid.NodeFromWorldPoint(tile.gameObject.transform.position).hasUnit = true;
                         return;
                     }
 

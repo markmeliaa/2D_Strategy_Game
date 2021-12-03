@@ -24,7 +24,7 @@ public class PathfindingWithoutThreads : MonoBehaviour
 
     // WITHOUT THREADS
     // Apply A*
-    public static Queue<Vector3> FindPath(Vector3 startPos, Vector3 targetPos)
+    public static List<Vector3> FindPath(Vector3 startPos, Vector3 targetPos)
     {
         // Get positions as nodes
         Node startNode = grid.NodeFromWorldPoint(startPos);
@@ -70,22 +70,22 @@ public class PathfindingWithoutThreads : MonoBehaviour
         }
 
         // No path found, return empty list
-        return new Queue<Vector3>();
+        return new List<Vector3>();
     }
 
-    public static Queue<Vector3> RetracePath(Node startNode, Node endNode)
+    public static List<Vector3> RetracePath(Node startNode, Node endNode)
     {
-        Queue<Vector3> path = new Queue<Vector3>();
+        List<Vector3> path = new List<Vector3>();
         Node currentNode = endNode;
 
         while (currentNode != startNode)
         {
-            path.Enqueue(currentNode.worldPosition);
+            path.Add(currentNode.worldPosition);
             currentNode = currentNode.parent;
         }
 
         // As path is a route starting at the end node, reverse it
-        path = new Queue<Vector3>(path.Reverse());
+        path.Reverse();
 
         return path;
     }
