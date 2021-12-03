@@ -636,7 +636,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isSelected: 0
   hasMoved: 0
-  tileSpeed: 1
+  tileSpeed: 2
   moveSpeed: 3
   attackRadius: 1.25
   hasAttacked: 0

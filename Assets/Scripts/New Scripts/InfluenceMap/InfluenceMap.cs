@@ -152,7 +152,7 @@ public class InfluenceMap : GridData
 
 
         // DIAGONALS
-
+        /*
         // as long as not in bottom-left
         if (x > 0 && y > 0) { retVal.Add(new Vector2I(x - 1, y - 1, 1.142f)); }
 
@@ -164,6 +164,7 @@ public class InfluenceMap : GridData
 
         // as long as not in bottom-right
         if (x < influences.GetLength(0) - 1 && y > 0) { retVal.Add(new Vector2I(x + 1, y - 1, 1.142f)); }
+        */
 
         return retVal.ToArray();
     }

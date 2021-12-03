@@ -97,9 +97,9 @@ public class PathfindingWithoutThreads : MonoBehaviour
 
         if (dstX > dstY)
         {
-            return 14 * dstY + 10 * (dstX - dstY);
+            return 2000 * dstY + 10 * (dstX - dstY);
         }
 
-        return 14 * dstX + 10 * (dstY - dstX);
+        return 2000 * dstX + 10 * (dstY - dstX);
     }
 }
