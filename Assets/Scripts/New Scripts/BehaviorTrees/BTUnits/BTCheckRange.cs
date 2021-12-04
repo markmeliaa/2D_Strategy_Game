@@ -2,17 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BTCheckRange : MonoBehaviour
+public class BTCheckRange : BTNode
 {
-    // Start is called before the first frame update
-    void Start()
+    Unit unit;
+
+    public BTCheckRange(BehaviorTree t, Unit _unit) : base(t)
     {
-        
+        unit = _unit;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override Result Execute()
     {
-        
+        List<Unit> enemiesInRange = unit.enemiesInRange;
+
+        //Debug.Log(enemiesInRange.Count);
+
+        if (enemiesInRange.Count <= 0)
+            return Result.Failure;
+
+        else
+            return Result.Success;
     }
 }

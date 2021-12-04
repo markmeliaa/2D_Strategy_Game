@@ -16,23 +16,23 @@ public class BTBuyMoreUnits : BTNode
 
     public List<Unit> BuyUnits()
     {
-        while (gm.player2Gold > 40)
+        while (gm.player2Gold >= 40)
         {
-            if (gm.player2Gold > 100)
+            if (gm.player2Gold >= 100)
             {
                 selectedUnits.Add(gm.blueVillage.GetComponent<Unit>());
                 characterCreation.BuyVillage(gm.blueVillage.GetComponent<Village>());
                 //Debug.Log("Buying village");
             }
 
-            else if (gm.player2Gold > 90)
+            else if (gm.player2Gold >= 90)
             {
                 selectedUnits.Add(gm.blueArcher.GetComponent<Unit>());
                 characterCreation.BuyUnit(gm.blueArcher.GetComponent<Unit>());
                 //Debug.Log("Buying archer");
             }
 
-            else if (gm.player2Gold > 70)
+            else if (gm.player2Gold >= 70)
             {
                 selectedUnits.Add(gm.blueDragon.GetComponent<Unit>());
                 characterCreation.BuyUnit(gm.blueDragon.GetComponent<Unit>());

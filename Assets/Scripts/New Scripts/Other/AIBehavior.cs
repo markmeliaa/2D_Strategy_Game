@@ -30,84 +30,25 @@ public class AIBehavior : MonoBehaviour
         // Then move the troops
         foreach (Unit unit in enemyUnits)
         {
-            //StartCoroutine(behaviorTree.RunBehaviorunit.uRoot));
-            StartCoroutine(unit.Act());
-            yield return new WaitForSeconds(1.5f);
-        }
-
-        gm.EndTurn();
-    }
-
-    /*
-    // Decides whether to buy or not
-    // TODO: Place the units and villages in the map
-    public void BuyTroop(int spend)
-    {
-        if (spend == 0)
-            return;
-
-        // Spend just in one troop, the best you can afford
-        if (spend == 1 && gm.player2Gold > 40 && enemyUnits.Count < 11)
-        {
-            if (gm.player2Gold > 100 && enemyUnits.Count > 3)
+            if (!unit.isBlueKing)
             {
-                Debug.Log("Can buy village");
-                gm.player2Gold -= 100;
-            }
-
-            else if (gm.player2Gold > 90)
-            {
-                Debug.Log("Can buy archer");
-                gm.player2Gold -= 90;
-            }
-
-            else if (gm.player2Gold > 70)
-            {
-                Debug.Log("Can buy dragon");
-                gm.player2Gold -= 70;
+                unit.uRoot = new BTRepeater(behaviorTree, new BTSelector(behaviorTree, new BTNode[] {
+                new BTRepeater(behaviorTree, new BTSequencer(behaviorTree, new BTNode [] { new BTCheckRange(behaviorTree, unit), new BTAttackUnit(behaviorTree, unit)})),
+                new BTRepeater(behaviorTree, new BTSequencer(behaviorTree, new BTNode[] { new BTMoveUnit(behaviorTree, unit), new BTWaitNode(behaviorTree), new BTCheckRange(behaviorTree, unit), new BTAttackUnit(behaviorTree, unit) })) }));
             }
 
             else
             {
-                Debug.Log("Can buy knight");
-                gm.player2Gold -= 40;
+                unit.uRoot = new BTRepeater(behaviorTree, new BTSelector(behaviorTree, new BTNode[] {
+                new BTRepeater(behaviorTree, new BTSequencer(behaviorTree, new BTNode [] { new BTCheckRange(behaviorTree, unit), new BTAttackUnit(behaviorTree, unit)})),
+                new BTRepeater(behaviorTree, new BTSequencer(behaviorTree, new BTNode[] { new BTFleeKing(behaviorTree, unit), new BTWaitNode(behaviorTree), new BTCheckRange(behaviorTree, unit), new BTAttackUnit(behaviorTree, unit) })) }));
             }
 
-            gm.UpdateGoldText();
+            StartCoroutine(behaviorTree.RunBehavior(unit.uRoot));
+            //StartCoroutine(unit.Act());
+            yield return new WaitForSeconds(2.5f);
         }
 
-        // Spend all the money
-        if (spend == 2 && enemyUnits.Count < 7)
-        {
-            while (gm.player2Gold > 40)
-            {
-                if (gm.player2Gold > 100 && enemyUnits.Count > 3)
-                {
-                    Debug.Log("Can buy village");
-                    gm.player2Gold -= 100;
-                }
-
-                else if (gm.player2Gold > 90)
-                {
-                    Debug.Log("Can buy archer");
-                    gm.player2Gold -= 90;
-                }
-
-                else if (gm.player2Gold > 70)
-                {
-                    Debug.Log("Can buy dragon");
-                    gm.player2Gold -= 70;
-                }
-
-                else
-                {
-                    Debug.Log("Can buy knight");
-                    gm.player2Gold -= 40;
-                }
-
-                gm.UpdateGoldText();
-            }
-        }
+        gm.EndTurn();
     }
-    */
 }

@@ -17,7 +17,10 @@ public class BTSequencer : BTComposite
             Result result = Children[currentNode].Execute();
 
             if (result == Result.Running)
-                return Result.Running;
+            {
+                Children[currentNode].Execute();
+            }
+                
 
             else if (result == Result.Failure)
             {

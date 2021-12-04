@@ -16,21 +16,21 @@ public class BTBuyOneUnit : BTNode
 
     public Unit BuyUnit()
     {
-        if (gm.player2Gold > 100)
+        if (gm.player2Gold >= 100)
         {
             selectedUnit = gm.blueVillage.GetComponent<Unit>();
             characterCreation.BuyVillage(gm.blueVillage.GetComponent<Village>());
             //Debug.Log("Buying village");
         }
 
-        else if (gm.player2Gold > 90)
+        else if (gm.player2Gold >= 90)
         {
             selectedUnit = gm.blueArcher.GetComponent<Unit>();
             characterCreation.BuyUnit(gm.blueArcher.GetComponent<Unit>());
             //Debug.Log("Buying archer");
         }
 
-        else if (gm.player2Gold > 70)
+        else if (gm.player2Gold >= 70)
         {
             selectedUnit = gm.blueDragon.GetComponent<Unit>();
             characterCreation.BuyUnit(gm.blueDragon.GetComponent<Unit>());

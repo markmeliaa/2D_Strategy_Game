@@ -175,7 +175,7 @@ public class Unit : MonoBehaviour
         StartCoroutine(StartMovement(n));
     }
 
-    void Attack(Unit enemy) {
+    public void Attack(Unit enemy) {
         hasAttacked = true;
 
         int enemyDamege = attackDamage - enemy.armor;
@@ -268,7 +268,7 @@ public class Unit : MonoBehaviour
         }
     }
 
-    IEnumerator StartMovement(Node moveTo) { // Moves the character to his new position.
+    public IEnumerator StartMovement(Node moveTo) { // Moves the character to his new position.
 
         path = PathfindingWithoutThreads.FindPath(transform.position, moveTo.worldPosition);
 
@@ -278,8 +278,11 @@ public class Unit : MonoBehaviour
         if (path.Count > 0)
         {
             int steps = 0;
-            currentNode.walkable = true;
-            currentNode.hasUnit = false;
+            if (currentNode != null)
+            {
+                currentNode.walkable = true;
+                currentNode.hasUnit = false;
+            }
 
             while (path.Count > 0 && steps < tileSpeed)
             {
@@ -321,7 +324,7 @@ public class Unit : MonoBehaviour
         GetEnemies();
     }
 
-    IEnumerator StartMovementArcher(Node moveTo)
+    public IEnumerator StartMovementArcher(Node moveTo)
     { // Moves the character to his new position.
 
         path = PathfindingWithoutThreads.FindPath(transform.position, moveTo.worldPosition);
@@ -425,21 +428,21 @@ public class Unit : MonoBehaviour
         }
     }
 
-    void Flee()
+    public void Flee()
     {
         Vector3 moveTo = InfluenceMapControl.influenceMap.GetPositionWithLessInfluence();
         
         if (moveTo != new Vector3(-99, -99, -99)) StartCoroutine(StartMovement(PathfindingWithoutThreads.grid.NodeFromWorldPoint(moveTo)));
     }
 
-    void Move()
+    public void Move()
     {
         Vector3 moveTo = InfluenceMapControl.influenceMap.GetPositionWithMoreInfluence();
 
         if (moveTo != new Vector3(-99, -99, -99)) StartCoroutine(StartMovement(PathfindingWithoutThreads.grid.NodeFromWorldPoint(moveTo)));
     }
 
-    void MoveArcher()
+    public void MoveArcher()
     {
         Vector3 moveTo = InfluenceMapControl.influenceMap.GetPositionWithMoreInfluence();
 
