@@ -47,6 +47,9 @@ public class Unit : MonoBehaviour
     Node currentNode;
     List<Vector3> path;
 
+    // Behavior tree stuff
+    public BTNode uRoot;
+
     private void Start()
     {
 		source = GetComponent<AudioSource>();

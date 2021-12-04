@@ -66,13 +66,14 @@ public class Tile : MonoBehaviour
             PathfindingWithoutThreads.grid.NodeFromWorldPoint(unit.transform.position).hasUnit = true;
             unit.hasMoved = true;
             unit.hasAttacked = true;
+            unit.transform.parent = GameObject.FindGameObjectWithTag("unitParent").gameObject.transform;
             gm.ResetTiles();
             gm.createdUnit = null;
         } 
         
         else if (isCreatable == true && gm.createdVillage != null) 
         {
-            Instantiate(gm.createdVillage, new Vector3(transform.position.x, transform.position.y, 0) , Quaternion.identity);
+            Instantiate(gm.createdVillage, new Vector3(transform.position.x, transform.position.y, 0) , Quaternion.identity).transform.parent = GameObject.FindGameObjectWithTag("unitParent").gameObject.transform;
             gm.ResetTiles();
             gm.createdVillage = null;
         }

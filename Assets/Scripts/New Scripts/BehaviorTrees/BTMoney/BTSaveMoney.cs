@@ -5,14 +5,14 @@ using UnityEngine;
 public class BTSaveMoney : BTNode
 {
     int random;
-    public BTSaveMoney(BehaviorTree t, int _random) : base(t)
+    public BTSaveMoney(BehaviorTree t) : base(t)
     {
-        random = _random;
+        
     }
 
     public override Result Execute()
     {
-        Debug.Log(random);
+        int random = Random.Range(0, 3);
 
         // If the random is 0, return Success
         if (random < 1)

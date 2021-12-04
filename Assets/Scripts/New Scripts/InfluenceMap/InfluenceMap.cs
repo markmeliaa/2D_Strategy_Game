@@ -152,19 +152,19 @@ public class InfluenceMap : GridData
 
 
         // DIAGONALS
-        /*
+        
         // as long as not in bottom-left
-        if (x > 0 && y > 0) { retVal.Add(new Vector2I(x - 1, y - 1, 1.142f)); }
+        if (x > 0 && y > 0) { retVal.Add(new Vector2I(x - 1, y - 1, 3f)); }
 
         // as long as not in upper-right
-        if (x < influences.GetLength(0) - 1 && y < influences.GetLength(1) - 1) { retVal.Add(new Vector2I(x + 1, y + 1, 1.142f)); }
+        if (x < influences.GetLength(0) - 1 && y < influences.GetLength(1) - 1) { retVal.Add(new Vector2I(x + 1, y + 1, 3f)); }
 
         // as long as not in upper-left
-        if (x > 0 && y < influences.GetLength(1) - 1) { retVal.Add(new Vector2I(x - 1, y + 1, 1.142f)); }
+        if (x > 0 && y < influences.GetLength(1) - 1) { retVal.Add(new Vector2I(x - 1, y + 1, 3f)); }
 
         // as long as not in bottom-right
-        if (x < influences.GetLength(0) - 1 && y > 0) { retVal.Add(new Vector2I(x + 1, y - 1, 1.142f)); }
-        */
+        if (x < influences.GetLength(0) - 1 && y > 0) { retVal.Add(new Vector2I(x + 1, y - 1, 3f)); }
+        
 
         return retVal.ToArray();
     }
@@ -195,7 +195,7 @@ public class InfluenceMap : GridData
         {
             for (int y = 0; y < influences.GetLength(1); y++)
             {
-                if (influences[x, y] > maxInfluence && PathfindingWithoutThreads.grid.NodeFromWorldPoint(new Vector3(x - CoordX, y - CoordY, 0)).walkable)
+                if (influences[x, y] >= maxInfluence && PathfindingWithoutThreads.grid.NodeFromWorldPoint(new Vector3(x - CoordX, y - CoordY, 0)).walkable)
                 {
                     maxInfluence = influences[x, y];
                     posWithMaxInfluence = new Vector3(x - CoordX, y - CoordY, 0);
@@ -213,7 +213,7 @@ public class InfluenceMap : GridData
         {
             for (int y = 0; y < influences.GetLength(1); y++)
             {
-                if (influences[x, y] < minInfluence && PathfindingWithoutThreads.grid.NodeFromWorldPoint(new Vector3(x - CoordX, y - CoordY, 0)).walkable)
+                if (influences[x, y] <= minInfluence && PathfindingWithoutThreads.grid.NodeFromWorldPoint(new Vector3(x - CoordX, y - CoordY, 0)).walkable)
                 {
                     minInfluence = influences[x, y];
                     posWithMinInfluence = new Vector3(x - CoordX, y - CoordY, 0);
