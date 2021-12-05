@@ -138,9 +138,10 @@ public class Unit : MonoBehaviour
             return;
         }
 
+        //Debug.Log("Get tiles");
         Tile[] tiles = FindObjectsOfType<Tile>();
         foreach (Tile tile in tiles) {
-            if (Mathf.Abs(transform.position.x - tile.transform.position.x) + Mathf.Abs(transform.position.y - tile.transform.position.y) <= tileSpeed)
+            if (Mathf.Abs(transform.position.x - tile.transform.position.x) + Mathf.Abs(transform.position.y - tile.transform.position.y) <= tileSpeed + 0.5f)
             { // how far he can move
                 if (tile.isClear() == true)
                 { // is the tile clear from any obstacles
@@ -151,7 +152,7 @@ public class Unit : MonoBehaviour
         }
     }
 
-    void GetEnemies() {
+    public void GetEnemies() {
     
         enemiesInRange.Clear();
 
@@ -229,7 +230,7 @@ public class Unit : MonoBehaviour
                 gm.ShowVictoryPanel(enemy.playerNumber);
             }
 
-            GetWalkableTiles(); // check for new walkable tiles (if enemy has died we can now walk on his tile)
+            //GetWalkableTiles(); // check for new walkable tiles (if enemy has died we can now walk on his tile)
             gm.RemoveInfoPanel(enemy);
             PathfindingWithoutThreads.grid.NodeFromWorldPoint(enemy.transform.position).walkable = true;
             Destroy(enemy.gameObject);
@@ -333,9 +334,12 @@ public class Unit : MonoBehaviour
         if (path.Count > 0)
         {
             int steps = 0;
-            currentNode.walkable = true;
-            currentNode.hasUnit = false;
-
+            if (currentNode != null)
+            {
+                currentNode.walkable = true;
+                currentNode.hasUnit = false;
+            }
+            
             Vector3 last = new Vector3();
             Vector3 lastlast = new Vector3();
 
@@ -414,16 +418,26 @@ public class Unit : MonoBehaviour
 
             else if (transform.tag == "Archer")
             {
-                MoveArcher();
-                yield return new WaitForSeconds(1.5f);
                 Attack();
+
+                if (!hasAttacked)
+                {
+                    MoveArcher();
+                    yield return new WaitForSeconds(1.5f);
+                    Attack();
+                }                
             }
 
             else
             {
-                Move();
-                yield return new WaitForSeconds(1.5f);
                 Attack();
+
+                if (!hasAttacked)
+                {
+                    Move();
+                    yield return new WaitForSeconds(1.5f);
+                    Attack();
+                }
             }
         }
     }
@@ -451,6 +465,8 @@ public class Unit : MonoBehaviour
 
     void Attack()
     {
+        GetEnemies();
+
         if (enemiesInRange.Count > 0)
         {
             foreach (Unit enemy in enemiesInRange)

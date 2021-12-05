@@ -14,6 +14,8 @@ public class BTAttackUnit : BTNode
 
     bool Attack()
     {
+        unit.GetEnemies();
+
         if (unit.enemiesInRange.Count == 0)
             return false;
 

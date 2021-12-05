@@ -30,6 +30,7 @@ public class AIBehavior : MonoBehaviour
         // Then move the troops
         foreach (Unit unit in enemyUnits)
         {
+            /*
             if (!unit.isBlueKing)
             {
                 unit.uRoot = new BTRepeater(behaviorTree, new BTSelector(behaviorTree, new BTNode[] {
@@ -45,8 +46,10 @@ public class AIBehavior : MonoBehaviour
             }
 
             StartCoroutine(behaviorTree.RunBehavior(unit.uRoot));
-            //StartCoroutine(unit.Act());
-            yield return new WaitForSeconds(2.5f);
+            */
+
+            StartCoroutine(unit.Act());
+            yield return new WaitForSeconds(1.5f);
         }
 
         gm.EndTurn();

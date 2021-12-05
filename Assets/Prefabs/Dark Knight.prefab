@@ -520,7 +520,7 @@ MonoBehaviour:
   enemiesInRange: []
   playerNumber: 1
   weaponIcon: {fileID: 699492358}
-  health: 5
+  health: 6
   attackDamage: 3
   defenseDamage: 2
   armor: 1
@@ -532,6 +532,7 @@ MonoBehaviour:
   isBlueKing: 0
   isRedKing: 0
   displayedText: {fileID: 0}
+  uRoot: {fileID: 0}
 --- !u!114 &1771498148
 MonoBehaviour:
   m_ObjectHideFlags: 0

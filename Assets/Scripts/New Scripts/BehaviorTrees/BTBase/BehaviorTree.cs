@@ -35,6 +35,6 @@ public class BehaviorTree : MonoBehaviour
             result = root.Execute();
         }
 
-        Debug.Log("Behavior has finished with: " + result);
+        //Debug.Log("Behavior has finished with: " + result);
     }
 }
