@@ -74,11 +74,13 @@ public class RandomGeneration : MonoBehaviour
             rand = Random.Range(0, spawnpoints.Count);
             int rand2 = Random.Range(0, trees.Length);
             Instantiate(trees[rand2], spawnpoints[rand].transform.position, Quaternion.identity, unitParent.transform);
-            if (rand2 == 2 || rand2 == 6 || rand2 == 7)
+
+            if (rand2 != 3 && rand2 != 4 && rand2 != 5)
             {
                 currentNode = PathfindingWithoutThreads.grid.NodeFromWorldPoint(spawnpoints[rand].transform.position);
                 currentNode.walkable = false;
             }
+
             spawnpoints.RemoveAt(rand);
         }
     }

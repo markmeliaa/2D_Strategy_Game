@@ -414,6 +414,7 @@ public class Unit : MonoBehaviour
                 Flee();
                 yield return new WaitForSeconds(1.5f);
                 Attack();
+                hasAttacked = false;
             }
 
             else if (transform.tag == "Archer")
@@ -425,6 +426,7 @@ public class Unit : MonoBehaviour
                     MoveArcher();
                     yield return new WaitForSeconds(1.5f);
                     Attack();
+                    hasAttacked = false;
                 }                
             }
 
@@ -437,6 +439,7 @@ public class Unit : MonoBehaviour
                     Move();
                     yield return new WaitForSeconds(1.5f);
                     Attack();
+                    hasAttacked = false;
                 }
             }
         }
