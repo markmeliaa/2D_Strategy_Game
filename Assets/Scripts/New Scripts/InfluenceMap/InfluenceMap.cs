@@ -38,6 +38,8 @@ public class InfluenceMap : GridData
     public float CoordY { get; }
     public float GetValue(int x, int y) { return influences[x, y]; }
 
+    public FieldGrid pathfinding;
+
     public InfluenceMap(int size, float decay, float momentum, float x, float y)
     {
         influences = new float[size, size];
@@ -86,10 +88,10 @@ public class InfluenceMap : GridData
         propagators.Remove(p);
     }
 
-    public void Propagate()
+    public void Propagate(FieldGrid pathGrid)
     {
         updatePropagators();
-        updatePropagation();
+        updatePropagation(pathGrid);
         updateInfluenceBuffer();
     }
 
@@ -101,7 +103,7 @@ public class InfluenceMap : GridData
         }
     }
 
-    void updatePropagation()
+    void updatePropagation(FieldGrid pathGrid)
     {
         for (int x = 0; x < influences.GetLength(0); ++x)
         {
@@ -119,6 +121,8 @@ public class InfluenceMap : GridData
 
                 if (Mathf.Abs(minInf) > maxInf) influences[x, y] = Mathf.Lerp(influencesBuffer[x, y], minInf, Momentum);
                 else influences[x, y] = Mathf.Lerp(influencesBuffer[x, y], maxInf, Momentum);
+
+                pathGrid.grid[x, y].influenceCost = influences[x, y];
             }
         }
     }
@@ -154,16 +158,16 @@ public class InfluenceMap : GridData
         // DIAGONALS
         
         // as long as not in bottom-left
-        if (x > 0 && y > 0) { retVal.Add(new Vector2I(x - 1, y - 1, 3f)); }
+        if (x > 0 && y > 0) { retVal.Add(new Vector2I(x - 1, y - 1, 1000f)); }
 
         // as long as not in upper-right
-        if (x < influences.GetLength(0) - 1 && y < influences.GetLength(1) - 1) { retVal.Add(new Vector2I(x + 1, y + 1, 3f)); }
+        if (x < influences.GetLength(0) - 1 && y < influences.GetLength(1) - 1) { retVal.Add(new Vector2I(x + 1, y + 1, 1000f)); }
 
         // as long as not in upper-left
-        if (x > 0 && y < influences.GetLength(1) - 1) { retVal.Add(new Vector2I(x - 1, y + 1, 3f)); }
+        if (x > 0 && y < influences.GetLength(1) - 1) { retVal.Add(new Vector2I(x - 1, y + 1, 1000f)); }
 
         // as long as not in bottom-right
-        if (x < influences.GetLength(0) - 1 && y > 0) { retVal.Add(new Vector2I(x + 1, y - 1, 3f)); }
+        if (x < influences.GetLength(0) - 1 && y > 0) { retVal.Add(new Vector2I(x + 1, y - 1, 1000f)); }
         
 
         return retVal.ToArray();
@@ -202,6 +206,8 @@ public class InfluenceMap : GridData
                 }
             }
         }
+
+        //Debug.Log("Max: " + maxInfluence);
         return posWithMaxInfluence;
     }
 

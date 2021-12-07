@@ -18,7 +18,11 @@ public class AIBehavior : MonoBehaviour
         foreach (Unit unit in FindObjectsOfType<Unit>())
         {
             if (unit.playerNumber == 2)
+            {
+                unit.hasMoved = false;
+                unit.hasAttacked = false;
                 enemyUnits.Add(unit);
+            }  
         }
 
         StartCoroutine(behaviorTree.RunBehavior(behaviorTree.MRoot));
@@ -49,7 +53,7 @@ public class AIBehavior : MonoBehaviour
             */
 
             StartCoroutine(unit.Act());
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1.75f);
         }
 
         gm.EndTurn();

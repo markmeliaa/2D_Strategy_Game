@@ -655,6 +655,7 @@ MonoBehaviour:
   isBlueKing: 1
   isRedKing: 0
   displayedText: {fileID: 0}
+  uRoot: {fileID: 0}
 --- !u!114 &179943397156523650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -821,4 +822,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e88621520ab8bd4c8a83b77410e2e8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  value: -40
+  value: -100

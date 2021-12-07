@@ -6,13 +6,15 @@ public class Node : IHeapItem<Node>
 {
     public bool walkable;
     public bool hasUnit;
+    public bool hasTree;
     public Vector3 worldPosition;
     public int gridX;
     public int gridY;
-    public float influenceCost;
 
     public int gCost;
     public int hCost;
+    public float tacticalCost;
+    public float influenceCost;
     public Node parent;
     int heapIndex;
 
@@ -25,11 +27,11 @@ public class Node : IHeapItem<Node>
         hasUnit = false;
     }
 
-    public int fCost
+    public float fCost
     {
         get
         {
-            return gCost + hCost;
+            return gCost + hCost + tacticalCost + influenceCost;
         }
 
         // No set because we won't have to modify the fCost directly

@@ -51,13 +51,62 @@ public class PathfindingWithoutThreads : MonoBehaviour
 
             foreach (Node neighbour in grid.GetNeighours(currentNode))
             {
+                if (neighbour.hasTree || !neighbour.walkable || closedSet.Contains(neighbour))
+                    continue;
+
+                float newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour) + currentNode.tacticalCost;
+                if (newMovementCostToNeighbour < (neighbour.gCost + neighbour.tacticalCost) || !openSet.Contains(neighbour))
+                {
+                    neighbour.gCost = (int)newMovementCostToNeighbour;
+                    neighbour.hCost = GetDistance(neighbour, targetNode);
+                    neighbour.parent = currentNode;
+
+                    //UnityEngine.Debug.Log(neighbour.influenceCost);
+
+                    if (!openSet.Contains(neighbour))
+                        openSet.Add(neighbour);
+                }
+            }
+        }
+
+        // No path found, return empty list
+        return new List<Vector3>();
+    }
+
+    public static List<Vector3> FindPathKnights(Vector3 startPos, Vector3 targetPos)
+    {
+        // Get positions as nodes
+        Node startNode = grid.NodeFromWorldPoint(startPos);
+        Node targetNode = grid.NodeFromWorldPoint(targetPos);
+
+        // Initialize the open and closed set
+        Heap<Node> openSet = new Heap<Node>(grid.MaxSize);
+        HashSet<Node> closedSet = new HashSet<Node>();
+
+        // Start the open set with the first node
+        openSet.Add(startNode);
+
+        // While there are nodes on the open set, keep looking for a route
+        while (openSet.Count > 0)
+        {
+            Node currentNode = openSet.RemoveFirst();
+            closedSet.Add(currentNode);
+
+            // Path found
+            if (currentNode == targetNode)
+            {
+                return RetracePath(startNode, currentNode);
+            }
+
+            foreach (Node neighbour in grid.GetNeighours(currentNode))
+            {
                 if (!neighbour.walkable || closedSet.Contains(neighbour))
                     continue;
 
-                int newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour);
+                float newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour) - currentNode.tacticalCost * 2;
                 if (newMovementCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
                 {
-                    neighbour.gCost = newMovementCostToNeighbour;
+                    neighbour.gCost = (int)newMovementCostToNeighbour;
                     neighbour.hCost = GetDistance(neighbour, targetNode);
                     neighbour.parent = currentNode;
 

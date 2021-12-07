@@ -32,6 +32,8 @@ public class InfluenceMapControl : MonoBehaviour
 	public float x;
 	public float y;
 
+	[SerializeField] FieldGrid pathGrid;
+
 	void createMap()
 	{
 		int width = (int)(Mathf.Abs(upperRight.position.x - bottomLeft.position.x) / gridSize);
@@ -76,7 +78,7 @@ public class InfluenceMapControl : MonoBehaviour
 
 	void propagationUpdate()
 	{
-		influenceMap.Propagate();
+		influenceMap.Propagate(pathGrid);
 	}
 
 	void setInfluence(int x, int y, float value)

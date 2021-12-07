@@ -8,9 +8,9 @@ public class FieldGrid : MonoBehaviour
     public LayerMask unwalkableMask;
     public Vector2 gridWorldSize;
     public float nodeRadius;
-    Node[,] grid;
+    public Node[,] grid;
 
-    float nodeDiameter;
+    public float nodeDiameter;
     public int gridSizeX, gridSizeY;
 
     void Awake()
@@ -19,6 +19,8 @@ public class FieldGrid : MonoBehaviour
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
         CreateGrid();
+
+        //Debug.Log(gridSizeX + ", " + gridSizeY);
     }
 
     public int MaxSize
@@ -41,8 +43,14 @@ public class FieldGrid : MonoBehaviour
                 Vector3 worldPoint = worldbottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.up * (y * nodeDiameter + nodeRadius);
                 bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
                 grid[x, y] = new Node(walkable, worldPoint, x, y);
+                //grid[x, y].influenceCost = InfluenceMapControl.influenceMap.GetValue(x, y);
             }
         }
+    }
+
+    public void UpdateGrid(int x, int y, int cost)
+    {
+        grid[x, y].influenceCost = cost;
     }
 
     public List<Node> GetNeighours(Node node)
@@ -71,12 +79,14 @@ public class FieldGrid : MonoBehaviour
 
     public Node NodeFromWorldPoint(Vector3 worldPosition)
     {
+        /*
         int x = Mathf.RoundToInt((gridSizeX - 1) * (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x);
         int y = Mathf.RoundToInt((gridSizeY - 1) * (worldPosition.y + gridWorldSize.y / 2) / gridWorldSize.y);
 
         return grid[x, y];
+        */
 
-        /*
+        
         float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
         float percentY = (worldPosition.y + gridWorldSize.y / 2) / gridWorldSize.y;
         percentX = Mathf.Clamp01(percentX);
@@ -85,7 +95,6 @@ public class FieldGrid : MonoBehaviour
         int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
         return grid[x, y];
-        */
     }
 
     void OnDrawGizmos()
@@ -100,7 +109,10 @@ public class FieldGrid : MonoBehaviour
                 if (!n.walkable)
                     Gizmos.color = Color.red;
                 if (n.hasUnit)
+                    Gizmos.color = Color.blue;
+                if (n.hasTree)
                     Gizmos.color = Color.green;
+
                 //Gizmos.color = (n.walkable) ? Color.white : Color.red;
                 Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - 0.1f));
             }

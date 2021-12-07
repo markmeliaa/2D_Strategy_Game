@@ -81,7 +81,6 @@ public class Unit : MonoBehaviour
 
             if (isSelected == true)
             {
-
                 isSelected = false;
                 gm.selectedUnit = null;
                 gm.ResetTiles();
@@ -105,7 +104,10 @@ public class Unit : MonoBehaviour
                         source.Play();
                     }
 
-                    GetWalkableTiles();
+                    if (this.tag == "Knight")
+                        GetWalkableTilesKnight();
+                    else
+                        GetWalkableTiles();
                     GetEnemies();
                 }
 
@@ -152,6 +154,28 @@ public class Unit : MonoBehaviour
         }
     }
 
+    void GetWalkableTilesKnight()
+    { // Looks for the tiles the unit can walk on
+        if (hasMoved == true)
+        {
+            return;
+        }
+
+        //Debug.Log("Get tiles");
+        Tile[] tiles = FindObjectsOfType<Tile>();
+        foreach (Tile tile in tiles)
+        {
+            if (Mathf.Abs(transform.position.x - tile.transform.position.x) + Mathf.Abs(transform.position.y - tile.transform.position.y) <= tileSpeed + 0.5f)
+            { // how far he can move
+                if (tile.isClearKnight() == true)
+                { // is the tile clear from any obstacles
+                    tile.Highlight();
+                }
+
+            }
+        }
+    }
+
     public void GetEnemies() {
     
         enemiesInRange.Clear();
@@ -178,6 +202,7 @@ public class Unit : MonoBehaviour
 
     public void Attack(Unit enemy) {
         hasAttacked = true;
+        hasMoved = true;
 
         int enemyDamege = attackDamage - enemy.armor;
         int unitDamage = enemy.defenseDamage - armor;
@@ -269,9 +294,13 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public IEnumerator StartMovement(Node moveTo) { // Moves the character to his new position.
+    public IEnumerator StartMovement(Node moveTo) 
+    { // Moves the character to his new position.
 
-        path = PathfindingWithoutThreads.FindPath(transform.position, moveTo.worldPosition);
+        if (this.tag == "Knight")
+            path = PathfindingWithoutThreads.FindPathKnights(transform.position, moveTo.worldPosition);
+        else
+            path = PathfindingWithoutThreads.FindPath(transform.position, moveTo.worldPosition);
 
         //Debug.Log("Moving " + this.gameObject.name);
 
@@ -353,7 +382,7 @@ public class Unit : MonoBehaviour
 
             foreach (Node node in neighbors)
             {
-                if (PathfindingWithoutThreads.grid.NodeFromWorldPoint(lastlast).walkable && node.hasUnit)
+                if (PathfindingWithoutThreads.grid.NodeFromWorldPoint(lastlast).walkable && !node.hasUnit)
                 {
                     path.Remove(last);
                     break;
@@ -414,7 +443,6 @@ public class Unit : MonoBehaviour
                 Flee();
                 yield return new WaitForSeconds(1.5f);
                 Attack();
-                hasAttacked = false;
             }
 
             else if (transform.tag == "Archer")
@@ -426,8 +454,7 @@ public class Unit : MonoBehaviour
                     MoveArcher();
                     yield return new WaitForSeconds(1.5f);
                     Attack();
-                    hasAttacked = false;
-                }                
+                }
             }
 
             else
@@ -439,7 +466,6 @@ public class Unit : MonoBehaviour
                     Move();
                     yield return new WaitForSeconds(1.5f);
                     Attack();
-                    hasAttacked = false;
                 }
             }
         }

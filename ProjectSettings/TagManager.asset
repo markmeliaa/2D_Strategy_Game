@@ -9,6 +9,7 @@ TagManager:
   - blueTextLife
   - redTextLife
   - unitParent
+  - Knight
   layers:
   - Default
   - TransparentFX
