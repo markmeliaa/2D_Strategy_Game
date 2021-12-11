@@ -104,8 +104,8 @@ public class Unit : MonoBehaviour
                         source.Play();
                     }
 
-                    if (this.tag == "Knight")
-                        GetWalkableTilesKnight();
+                    if (this.tag == "Knight" || this.tag == "Dragon")
+                        GetWalkableTilesKnightDragon();
                     else
                         GetWalkableTiles();
                     GetEnemies();
@@ -154,7 +154,7 @@ public class Unit : MonoBehaviour
         }
     }
 
-    void GetWalkableTilesKnight()
+    void GetWalkableTilesKnightDragon()
     { // Looks for the tiles the unit can walk on
         if (hasMoved == true)
         {
@@ -297,10 +297,10 @@ public class Unit : MonoBehaviour
     public IEnumerator StartMovement(Node moveTo) 
     { // Moves the character to his new position.
 
-        if (this.tag == "Knight")
-            path = PathfindingWithoutThreads.FindPathKnights(transform.position, moveTo.worldPosition);
+        if (transform.tag == "Knight" || transform.tag == "Dragon")
+            path = PathfindingWithoutThreads.FindPathKnightsDragons(transform.position, moveTo.worldPosition);
         else
-            path = PathfindingWithoutThreads.FindPath(transform.position, moveTo.worldPosition);
+            path = PathfindingWithoutThreads.FindPathArchersKing(transform.position, moveTo.worldPosition);
 
         //Debug.Log("Moving " + this.gameObject.name);
 
@@ -357,7 +357,7 @@ public class Unit : MonoBehaviour
     public IEnumerator StartMovementArcher(Node moveTo)
     { // Moves the character to his new position.
 
-        path = PathfindingWithoutThreads.FindPath(transform.position, moveTo.worldPosition);
+        path = PathfindingWithoutThreads.FindPathArchersKing(transform.position, moveTo.worldPosition);
 
         Node lastNode = null;
         if (path.Count > 0)

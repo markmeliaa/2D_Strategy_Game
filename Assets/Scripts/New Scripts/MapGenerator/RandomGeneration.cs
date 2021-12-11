@@ -82,8 +82,7 @@ public class RandomGeneration : MonoBehaviour
                 currentNode = PathfindingWithoutThreads.grid.NodeFromWorldPoint(spawnpoints[rand].transform.position);
                 //currentNode.walkable = false;
                 currentNode.hasTree = true;
-                currentNode.tacticalCost = 1000000f;
-            }
+                currentNode.tacticalCost = 10;            }
 
             else
             { 

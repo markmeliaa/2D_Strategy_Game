@@ -44,6 +44,8 @@ public class FieldGrid : MonoBehaviour
                 bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
                 grid[x, y] = new Node(walkable, worldPoint, x, y);
                 //grid[x, y].influenceCost = InfluenceMapControl.influenceMap.GetValue(x, y);
+
+                //Debug.Log("Position: " + x + ", " + y);
             }
         }
     }
@@ -94,6 +96,10 @@ public class FieldGrid : MonoBehaviour
 
         int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
+
+        if (x == 13)
+            Debug.Log("Trese");
+
         return grid[x, y];
     }
 

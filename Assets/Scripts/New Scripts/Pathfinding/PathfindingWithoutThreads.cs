@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 using System.Linq;
 using System.Diagnostics;
 using System;
@@ -24,7 +25,7 @@ public class PathfindingWithoutThreads : MonoBehaviour
 
     // WITHOUT THREADS
     // Apply A*
-    public static List<Vector3> FindPath(Vector3 startPos, Vector3 targetPos)
+    public static List<Vector3> FindPathArchersKing(Vector3 startPos, Vector3 targetPos)
     {
         // Get positions as nodes
         Node startNode = grid.NodeFromWorldPoint(startPos);
@@ -51,7 +52,7 @@ public class PathfindingWithoutThreads : MonoBehaviour
 
             foreach (Node neighbour in grid.GetNeighours(currentNode))
             {
-                if (neighbour.hasTree || !neighbour.walkable || closedSet.Contains(neighbour))
+                if (neighbour.hasTree || !neighbour.walkable || closedSet.Contains(neighbour) || neighbour.hasUnit)
                     continue;
 
                 float newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour) + currentNode.tacticalCost;
@@ -73,7 +74,7 @@ public class PathfindingWithoutThreads : MonoBehaviour
         return new List<Vector3>();
     }
 
-    public static List<Vector3> FindPathKnights(Vector3 startPos, Vector3 targetPos)
+    public static List<Vector3> FindPathKnightsDragons(Vector3 startPos, Vector3 targetPos)
     {
         // Get positions as nodes
         Node startNode = grid.NodeFromWorldPoint(startPos);
@@ -100,10 +101,11 @@ public class PathfindingWithoutThreads : MonoBehaviour
 
             foreach (Node neighbour in grid.GetNeighours(currentNode))
             {
-                if (!neighbour.walkable || closedSet.Contains(neighbour))
+                if (!neighbour.walkable || closedSet.Contains(neighbour) || neighbour.hasUnit)
                     continue;
 
-                float newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour) - currentNode.tacticalCost * 2;
+                float newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour) - currentNode.tacticalCost;
+                //UnityEngine.Debug.Log(currentNode.tacticalCost);
                 if (newMovementCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
                 {
                     neighbour.gCost = (int)newMovementCostToNeighbour;
