@@ -211,7 +211,7 @@ public class Unit : MonoBehaviour
         {
             enemy.health -= enemyDamege;
             enemy.UpdateHealthDisplay();
-            DamageIcon d = Instantiate(damageIcon, enemy.transform.position, Quaternion.identity);
+            DamageIcon d = Instantiate(damageIcon, enemy.transform.position, Quaternion.identity, GameObject.FindGameObjectWithTag("unitParent").gameObject.transform);
             d.Setup(enemyDamege);
         }
 
@@ -223,7 +223,7 @@ public class Unit : MonoBehaviour
                 {
                     health -= unitDamage;
                     UpdateHealthDisplay();
-                    DamageIcon d = Instantiate(damageIcon, transform.position, Quaternion.identity);
+                    DamageIcon d = Instantiate(damageIcon, transform.position, Quaternion.identity, GameObject.FindGameObjectWithTag("unitParent").gameObject.transform);
                     d.Setup(unitDamage);
                 }
             }
@@ -235,7 +235,7 @@ public class Unit : MonoBehaviour
             {
                 health -= unitDamage;
                 UpdateHealthDisplay();
-                DamageIcon d = Instantiate(damageIcon, transform.position, Quaternion.identity);
+                DamageIcon d = Instantiate(damageIcon, transform.position, Quaternion.identity, GameObject.FindGameObjectWithTag("unitParent").gameObject.transform);
                 d.Setup(unitDamage);
             }
         }
@@ -244,7 +244,7 @@ public class Unit : MonoBehaviour
         {
          
             if (deathEffect != null){
-				Instantiate(deathEffect, enemy.transform.position, Quaternion.identity);
+				Instantiate(deathEffect, enemy.transform.position, Quaternion.identity, GameObject.FindGameObjectWithTag("unitParent").gameObject.transform);
 				camAnim.SetTrigger("shake");
 			}
 
@@ -257,6 +257,7 @@ public class Unit : MonoBehaviour
 
             //GetWalkableTiles(); // check for new walkable tiles (if enemy has died we can now walk on his tile)
             gm.RemoveInfoPanel(enemy);
+            PathfindingWithoutThreads.grid.NodeFromWorldPoint(enemy.transform.position).hasUnit = false;
             PathfindingWithoutThreads.grid.NodeFromWorldPoint(enemy.transform.position).walkable = true;
             Destroy(enemy.gameObject);
         }
@@ -266,7 +267,7 @@ public class Unit : MonoBehaviour
 
             if (deathEffect != null)
 			{
-				Instantiate(deathEffect, enemy.transform.position, Quaternion.identity);
+				Instantiate(deathEffect, enemy.transform.position, Quaternion.identity, GameObject.FindGameObjectWithTag("unitParent").gameObject.transform);
 				camAnim.SetTrigger("shake");
 			}
 
@@ -279,6 +280,7 @@ public class Unit : MonoBehaviour
 
             gm.ResetTiles(); // reset tiles when we die
             gm.RemoveInfoPanel(this);
+            PathfindingWithoutThreads.grid.NodeFromWorldPoint(this.transform.position).hasUnit = false;
             PathfindingWithoutThreads.grid.NodeFromWorldPoint(this.transform.position).walkable = true;
             Destroy(gameObject);
         }
@@ -304,6 +306,8 @@ public class Unit : MonoBehaviour
 
         //Debug.Log("Moving " + this.gameObject.name);
 
+        //Debug.Log(path.Count);
+        //Debug.Log(currentNode);
         Node lastNode = null;
         if (path.Count > 0)
         {
@@ -360,6 +364,8 @@ public class Unit : MonoBehaviour
         path = PathfindingWithoutThreads.FindPathArchersKing(transform.position, moveTo.worldPosition);
 
         Node lastNode = null;
+        //Debug.Log(path.Count);
+        //Debug.Log(currentNode);
         if (path.Count > 0)
         {
             int steps = 0;

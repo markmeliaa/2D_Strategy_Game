@@ -55,7 +55,7 @@ public class PathfindingWithoutThreads : MonoBehaviour
                 if (neighbour.hasTree || !neighbour.walkable || closedSet.Contains(neighbour) || neighbour.hasUnit)
                     continue;
 
-                float newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour) + currentNode.tacticalCost;
+                float newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour) - currentNode.influenceCost;
                 if (newMovementCostToNeighbour < (neighbour.gCost + neighbour.tacticalCost) || !openSet.Contains(neighbour))
                 {
                     neighbour.gCost = (int)newMovementCostToNeighbour;

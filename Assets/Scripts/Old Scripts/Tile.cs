@@ -78,7 +78,9 @@ public class Tile : MonoBehaviour
         
         else if (isCreatable == true && gm.createdVillage != null) 
         {
-            Instantiate(gm.createdVillage, new Vector3(transform.position.x, transform.position.y, 0) , Quaternion.identity).transform.parent = GameObject.FindGameObjectWithTag("unitParent").gameObject.transform;
+            Village village = Instantiate(gm.createdVillage, new Vector3(transform.position.x, transform.position.y, 0), Quaternion.identity);
+            village.transform.parent = GameObject.FindGameObjectWithTag("unitParent").gameObject.transform;
+            PathfindingWithoutThreads.grid.NodeFromWorldPoint(village.transform.position).walkable = false;
             gm.ResetTiles();
             gm.createdVillage = null;
         }

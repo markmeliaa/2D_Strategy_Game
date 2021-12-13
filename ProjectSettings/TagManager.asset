@@ -10,6 +10,7 @@ TagManager:
   - redTextLife
   - unitParent
   - Knight
+  - Dragon
   layers:
   - Default
   - TransparentFX

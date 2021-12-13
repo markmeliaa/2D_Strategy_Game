@@ -97,8 +97,9 @@ public class FieldGrid : MonoBehaviour
         int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
 
+        /*
         if (x == 13)
-            Debug.Log("Trese");
+            Debug.Log("Trese");*/
 
         return grid[x, y];
     }

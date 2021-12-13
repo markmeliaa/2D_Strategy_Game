@@ -24,7 +24,7 @@ public class DamageIcon : MonoBehaviour
     }
 
 	void Destruction(){
-		Instantiate(effect, transform.position, Quaternion.identity);
+		Instantiate(effect, transform.position, Quaternion.identity, GameObject.FindGameObjectWithTag("unitParent").gameObject.transform);
 		Destroy(gameObject);
 	}
 
