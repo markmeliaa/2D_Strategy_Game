@@ -17,10 +17,18 @@ public class RandomGeneration : MonoBehaviour
 
     private GameObject unitParent;
 
+    private FieldGrid pathfindingGrid;
+
+    private int mapHalf;
+
     // Start is called before the first frame update
     void Start()
     {
         unitParent = GameObject.FindGameObjectWithTag("unitParent").gameObject;
+        pathfindingGrid = GameObject.Find("PathfindingGrid").GetComponent<FieldGrid>();
+        mapHalf = pathfindingGrid.gridSizeX / 2;
+
+        //PlaceUnits();
 
         int rand = Random.Range(0, spawnpoints.Count);
         Instantiate(king, spawnpoints[rand].transform.position, Quaternion.identity, unitParent.transform);
@@ -91,6 +99,112 @@ public class RandomGeneration : MonoBehaviour
             }
 
             spawnpoints.RemoveAt(rand);
+        }
+    }
+
+    void PlaceUnits()
+    {
+        int randX = Random.Range(0, pathfindingGrid.gridSizeX);
+        while (randX > mapHalf)
+        {
+            randX = Random.Range(0, pathfindingGrid.gridSizeX);
+        }
+        int randY = Random.Range(0, pathfindingGrid.gridSizeY);
+
+        if (!pathfindingGrid.grid[randX, randY].hasUnit && !pathfindingGrid.grid[randX, randY].hasTree && pathfindingGrid.grid[randX, randY].walkable)
+        {
+            Instantiate(king, pathfindingGrid.grid[randX, randY].worldPosition, Quaternion.identity, unitParent.transform);
+            pathfindingGrid.grid[randX, randY].hasUnit = true;
+            pathfindingGrid.grid[randX, randY].walkable = false;
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            randX = Random.Range(0, pathfindingGrid.gridSizeX);
+            while (randX > mapHalf)
+            {
+                randX = Random.Range(0, pathfindingGrid.gridSizeX);
+            }
+            randY = Random.Range(0, pathfindingGrid.gridSizeY);
+
+            if (!pathfindingGrid.grid[randX, randY].hasUnit && !pathfindingGrid.grid[randX, randY].hasTree && pathfindingGrid.grid[randX, randY].walkable)
+            {
+                Instantiate(knight, pathfindingGrid.grid[randX, randY].worldPosition, Quaternion.identity, unitParent.transform);
+                pathfindingGrid.grid[randX, randY].hasUnit = true;
+                pathfindingGrid.grid[randX, randY].walkable = false;
+            }
+        }
+
+        for (int i = 0; i < 2; i++)
+        {
+            randX = Random.Range(0, pathfindingGrid.gridSizeX);
+            while (randX > mapHalf)
+            {
+                randX = Random.Range(0, pathfindingGrid.gridSizeX);
+            }
+            randY = Random.Range(0, pathfindingGrid.gridSizeY);
+
+            if (!pathfindingGrid.grid[randX, randY].hasUnit && !pathfindingGrid.grid[randX, randY].hasTree && pathfindingGrid.grid[randX, randY].walkable)
+            {
+                Instantiate(archer, pathfindingGrid.grid[randX, randY].worldPosition, Quaternion.identity, unitParent.transform);
+                pathfindingGrid.grid[randX, randY].hasUnit = true;
+                pathfindingGrid.grid[randX, randY].walkable = false;
+            }
+        }
+
+        for (int i = 0; i < 2; i++)
+        {
+            randX = Random.Range(0, pathfindingGrid.gridSizeX);
+            while (randX > mapHalf)
+            {
+                randX = Random.Range(0, pathfindingGrid.gridSizeX);
+            }
+            randY = Random.Range(0, pathfindingGrid.gridSizeY);
+
+            if (!pathfindingGrid.grid[randX, randY].hasUnit && !pathfindingGrid.grid[randX, randY].hasTree && pathfindingGrid.grid[randX, randY].walkable)
+            {
+                Instantiate(dragon, pathfindingGrid.grid[randX, randY].worldPosition, Quaternion.identity, unitParent.transform);
+                pathfindingGrid.grid[randX, randY].hasUnit = true;
+                pathfindingGrid.grid[randX, randY].walkable = false;
+            }
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            randX = Random.Range(0, pathfindingGrid.gridSizeX);
+            while (randX > mapHalf)
+            {
+                randX = Random.Range(0, pathfindingGrid.gridSizeX);
+            }
+            randY = Random.Range(0, pathfindingGrid.gridSizeY);
+
+            if (!pathfindingGrid.grid[randX, randY].hasUnit && !pathfindingGrid.grid[randX, randY].hasTree && pathfindingGrid.grid[randX, randY].walkable)
+            {
+                Instantiate(village, pathfindingGrid.grid[randX, randY].worldPosition, Quaternion.identity, unitParent.transform);
+                pathfindingGrid.grid[randX, randY].walkable = false;
+            }
+        }
+
+        for (int i = 0; i < 15; i++)
+        {
+            randX = Random.Range(0, pathfindingGrid.gridSizeX);
+            while (randX > mapHalf)
+            {
+                randX = Random.Range(0, pathfindingGrid.gridSizeX);
+            }
+            randY = Random.Range(0, pathfindingGrid.gridSizeY);
+            int treeRand = Random.Range(0, trees.Length);
+
+            if (!pathfindingGrid.grid[randX, randY].hasUnit && !pathfindingGrid.grid[randX, randY].hasTree && pathfindingGrid.grid[randX, randY].walkable)
+            {
+                Instantiate(trees[treeRand], pathfindingGrid.grid[randX, randY].worldPosition, Quaternion.identity, unitParent.transform);
+                if (treeRand != 3 && treeRand != 4 && treeRand != 5)
+                {
+                    pathfindingGrid.grid[randX, randY].walkable = false;
+                    pathfindingGrid.grid[randX, randY].hasTree = true;
+                    pathfindingGrid.grid[randX, randY].tacticalCost = 10;
+                }
+            }
         }
     }
 }
